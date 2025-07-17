@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Name | Electrical Engineer Portfolio</title>
+    
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons for modern icons -->
+    <script src="https://unpkg.com/lucide-react@latest/dist/lucide-react.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+
+    <style>
+        /* Use the Inter font family defined in the Google Fonts link */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827; /* A dark gray from Tailwind's palette */
+        }
+        /* Style for the accent color to be used on headers, buttons, etc. */
+        .accent-color {
+            color: #38bdf8; /* A nice sky blue */
+        }
+        .accent-bg {
+            background-color: #38bdf8;
+        }
+        .accent-border {
+            border-color: #38bdf8;
+        }
+    </style>
+</head>
+<body class="text-gray-200">
+
+    <!-- =========== HEADER / NAVIGATION =========== -->
+    <header class="bg-gray-900/80 backdrop-blur-sm fixed top-0 left-0 right-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-white">
+                Seu Nome <span class="accent-color">.</span>
+            </a>
+            <div class="hidden md:flex space-x-6 items-center">
+                <a href="#about" class="hover:accent-color transition-colors duration-300">About</a>
+                <a href="#experience" class="hover:accent-color transition-colors duration-300">Experience</a>
+                <a href="#projects" class="hover:accent-color transition-colors duration-300">Projects</a>
+                <a href="#skills" class="hover:accent-color transition-colors duration-300">Skills</a>
+                <a href="#contact" class="bg-sky-500 hover:bg-sky-600 text-white font-semibold px-4 py-2 rounded-lg transition-colors duration-300">Contact</a>
+            </div>
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </nav>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-gray-900">
+            <a href="#about" class="block py-2 px-6 text-sm hover:bg-gray-800">About</a>
+            <a href="#experience" class="block py-2 px-6 text-sm hover:bg-gray-800">Experience</a>
+            <a href="#projects" class="block py-2 px-6 text-sm hover:bg-gray-800">Projects</a>
+            <a href="#skills" class="block py-2 px-6 text-sm hover:bg-gray-800">Skills</a>
+            <a href="#contact" class="block py-2 px-6 text-sm hover:bg-gray-800">Contact</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 pt-24">
+
+        <!-- =========== HERO SECTION =========== -->
+        <section id="hero" class="min-h-screen flex flex-col justify-center items-start text-left -mt-20">
+            <div class="max-w-3xl">
+                <p class="text-lg accent-color font-medium mb-2">Hi, my name is</p>
+                <h1 class="text-5xl md:text-7xl font-extrabold text-white tracking-tight mb-4">Seu Nome Completo.</h1>
+                <h2 class="text-4xl md:text-6xl font-extrabold text-gray-400 tracking-tight mb-6">I build things with circuits and code.</h2>
+                <p class="text-lg text-gray-400 max-w-xl mb-8">
+                    I'm an Electrical Engineering student at the University of São Paulo (USP), graduating in 2025. I'm passionate about developing innovative solutions in automation, embedded systems, and power electronics.
+                </p>
+                <a href="#projects" class="accent-bg hover:bg-sky-600 text-white font-bold py-3 px-6 rounded-lg text-lg transition-transform duration-300 inline-block transform hover:scale-105">
+                    View My Work
+                </a>
+            </div>
+        </section>
+
+        <!-- =========== ABOUT SECTION =========== -->
+        <section id="about" class="py-24">
+            <h2 class="text-3xl font-bold text-white mb-2">About Me</h2>
+            <div class="w-24 h-1 accent-bg mb-12"></div>
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-12 items-center">
+                <div class="md:col-span-3">
+                    <p class="text-gray-400 mb-4">
+                        Hello! I'm an aspiring Electrical Engineer with a strong foundation in both hardware and software. My journey into engineering began with a fascination for how everyday electronics work, which led me to pursue my degree at USP, one of Brazil's top universities.
+                    </p>
+                    <p class="text-gray-400 mb-4">
+                        Throughout my studies, I've had the opportunity to work on various projects, from designing printed circuit boards (PCBs) for signal processing to developing control algorithms for autonomous systems. I thrive on challenges and enjoy the process of transforming a complex problem into a functional and efficient solution.
+                    </p>
+                    <p class="text-gray-400">
+                        When I'm not in the lab or writing code, I enjoy hiking, playing the guitar, and exploring the latest advancements in renewable energy technology.
+                    </p>
+                </div>
+                <div class="md:col-span-2 flex justify-center">
+                    <div class="w-64 h-64 rounded-lg bg-gray-800 border-2 accent-border p-2 transform transition-transform duration-500 hover:rotate-3 hover:scale-105">
+                        <img src="https://placehold.co/400x400/1f2937/a0aec0?text=Your+Photo" alt="A placeholder for your professional headshot" class="rounded-md w-full h-full object-cover">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========== EXPERIENCE SECTION =========== -->
+        <section id="experience" class="py-24">
+            <h2 class="text-3xl font-bold text-white mb-2">Professional Experience</h2>
+            <div class="w-24 h-1 accent-bg mb-12"></div>
+            <div class="space-y-12">
+                <!-- Experience Item 1 -->
+                <div class="flex flex-col md:flex-row gap-6">
+                    <p class="accent-color font-semibold md:w-1/4">Jan 2024 - Present</p>
+                    <div class="md:w-3/4">
+                        <h3 class="text-xl font-bold text-white">Electrical Engineering Intern @ Major Tech Company</h3>
+                        <p class="text-gray-400 mt-2">
+                            Contributed to the R&D team by designing and testing PCBs for a new line of IoT sensors. Developed firmware in C++ to optimize power consumption, achieving a 15% reduction. Assisted in data analysis using Python and MATLAB to validate sensor accuracy.
+                        </p>
+                    </div>
+                </div>
+                <!-- Experience Item 2 -->
+                <div class="flex flex-col md:flex-row gap-6">
+                    <p class="accent-color font-semibold md:w-1/4">Mar 2023 - Dec 2023</p>
+                    <div class="md:w-3/4">
+                        <h3 class="text-xl font-bold text-white">Undergraduate Researcher @ USP Automation Lab</h3>
+                        <p class="text-gray-400 mt-2">
+                           Focused on control systems for unmanned aerial vehicles (UAVs). Implemented a Kalman filter for sensor fusion to improve flight stability. Published findings in a university-level symposium.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========== PROJECTS SECTION =========== -->
+        <section id="projects" class="py-24">
+            <h2 class="text-3xl font-bold text-white mb-2">Featured Projects</h2>
+            <div class="w-24 h-1 accent-bg mb-12"></div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Project Card 1 -->
+                <div class="bg-gray-800 rounded-lg p-6 transform hover:-translate-y-2 transition-transform duration-300">
+                    <h3 class="text-xl font-bold text-white mb-2">IoT-Based Smart Greenhouse</h3>
+                    <p class="text-gray-400 mb-4">A system that automatically controls temperature, humidity, and lighting in a greenhouse using sensors and actuators connected to a Raspberry Pi.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-gray-700 text-xs font-semibold px-2 py-1 rounded-full">Python</span>
+                        <span class="bg-gray-700 text-xs font-semibold px-2 py-1 rounded-full">Raspberry Pi</span>
+                        <span class="bg-gray-700 text-xs font-semibold px-2 py-1 rounded-full">Sensors</span>
+                    </div>
+                </div>
+                <!-- Project Card 2 -->
+                <div class="bg-gray-800 rounded-lg p-6 transform hover:-translate-y-2 transition-transform duration-300">
+                    <h3 class="text-xl font-bold text-white mb-2">Digital Signal Analyzer</h3>
+                    <p class="text-gray-400 mb-4">Designed and built a PCB with an ADC to capture analog signals and perform FFT analysis using an STM32 microcontroller, displaying the spectrum on an LCD.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-gray-700 text-xs font-semibold px-2 py-1 rounded-full">C/C++</span>
+                        <span class="bg-gray-700 text-xs font-semibold px-2 py-1 rounded-full">STM32</span>
+                        <span class="bg-gray-700 text-xs font-semibold px-2 py-1 rounded-full">KiCad</span>
+                        <span class="bg-gray-700 text-xs font-semibold px-2 py-1 rounded-full">PCB Design</span>
+                    </div>
+                </div>
+                <!-- Project Card 3 -->
+                <div class="bg-gray-800 rounded-lg p-6 transform hover:-translate-y-2 transition-transform duration-300">
+                    <h3 class="text-xl font-bold text-white mb-2">Solar Panel Charge Controller</h3>
+                    <p class="text-gray-400 mb-4">Developed a charge controller with MPPT (Maximum Power Point Tracking) algorithm to efficiently charge a battery from a solar panel.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-gray-700 text-xs font-semibold px-2 py-1 rounded-full">Arduino</span>
+                        <span class="bg-gray-700 text-xs font-semibold px-2 py-1 rounded-full">Power Electronics</span>
+                        <span class="bg-gray-700 text-xs font-semibold px-2 py-1 rounded-full">Control Theory</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========== SKILLS SECTION =========== -->
+        <section id="skills" class="py-24">
+            <h2 class="text-3xl font-bold text-white mb-2">Technical Skills</h2>
+            <div class="w-24 h-1 accent-bg mb-12"></div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-bold text-white mb-3">Languages</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>Python</li>
+                        <li>C / C++</li>
+                        <li>MATLAB</li>
+                        <li>VHDL / Verilog</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-white mb-3">Software & Tools</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>LTspice</li>
+                        <li>KiCad / Altium</li>
+                        <li>LabVIEW</li>
+                        <li>AutoCAD</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-white mb-3">Hardware</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>Arduino / ESP32</li>
+                        <li>Raspberry Pi</li>
+                        <li>STM32 Microcontrollers</li>
+                        <li>FPGAs</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-white mb-3">Lab Equipment</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>Oscilloscope</li>
+                        <li>Spectrum Analyzer</li>
+                        <li>Function Generator</li>
+                        <li>Soldering</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========== CONTACT SECTION =========== -->
+        <section id="contact" class="py-24 text-center">
+            <h2 class="text-3xl font-bold text-white mb-2">Get In Touch</h2>
+            <div class="w-24 h-1 accent-bg mb-8 mx-auto"></div>
+            <p class="text-gray-400 max-w-xl mx-auto mb-8">
+                I'm currently seeking full-time opportunities and internships in Electrical Engineering. My inbox is always open, whether you have a question or just want to say hi. I'll get back to you!
+            </p>
+            <a href="mailto:your.email@example.com" class="accent-bg hover:bg-sky-600 text-white font-bold py-4 px-8 rounded-lg text-lg transition-transform duration-300 inline-block transform hover:scale-105">
+                Say Hello
+            </a>
+        </section>
+    </main>
+
+    <!-- =========== FOOTER =========== -->
+    <footer class="py-8 border-t border-gray-800">
+        <div class="container mx-auto px-6 text-center text-gray-500">
+            <div class="flex justify-center space-x-6 mb-4">
+                <a href="#" class="hover:text-white transition-colors duration-300" aria-label="GitHub Profile">
+                    <i data-lucide="github" class="w-6 h-6"></i>
+                </a>
+                <a href="#" class="hover:text-white transition-colors duration-300" aria-label="LinkedIn Profile">
+                    <i data-lucide="linkedin" class="w-6 h-6"></i>
+                </a>
+                <a href="mailto:your.email@example.com" class="hover:text-white transition-colors duration-300" aria-label="Email">
+                    <i data-lucide="mail" class="w-6 h-6"></i>
+                </a>
+            </div>
+            <p>Designed & Built by Seu Nome</p>
+            <p>Inspired by modern web design trends.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- Mobile Menu Toggle ---
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // --- Close mobile menu when a link is clicked ---
+        const mobileMenuLinks = mobileMenu.getElementsByTagName('a');
+        for (let link of mobileMenuLinks) {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        }
+        
+        // --- Initialize Lucide Icons ---
+        lucide.createIcons();
+    </script>
+
+</body>
+</html>
