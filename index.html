@@ -3,64 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brian Lahr | Electrical Engineer Portfolio</title>
-    
-    <!-- Tailwind CSS for styling -->
+    <meta name="description" content="Brian Lahr is an Electrical Engineer and MSc researcher at the University of São Paulo working on binaural speech enhancement, hearing technology, signal processing, machine learning, and microwave sensing.">
+    <meta name="author" content="Brian Nicholas Alves Rondon Lahr">
+    <meta property="og:title" content="Brian Lahr | Electrical Engineer & Researcher">
+    <meta property="og:description" content="Research in binaural speech enhancement, hearing technology, signal processing, machine learning, and microwave sensing.">
+    <meta property="og:type" content="website">
+    <title>Brian Lahr | Electrical Engineer & Researcher</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Lucide Icons for modern icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
-        /* Use the Inter font family defined in the Google Fonts link */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #000000; /* Black background */
+            background-color: #000000;
         }
-        /* Style for the new accent color */
-        .accent-color {
-            color: #ffdb27; /* Vibrant Yellow */
-        }
-        .accent-bg {
-            background-color: #ffdb27; /* Vibrant Yellow */
-        }
-        .accent-border {
-            border-color: #ffdb27; /* Vibrant Yellow */
-        }
+        .accent-color { color: #ffdb27; }
+        .accent-bg { background-color: #ffdb27; }
+        .accent-border { border-color: #ffdb27; }
+        .section-rule { width: 6rem; height: 0.25rem; background-color: #ffdb27; }
+        .card { background-color: rgb(17 24 39); }
     </style>
 </head>
 <body class="text-[#fffceb]">
 
-    <!-- =========== HEADER / NAVIGATION =========== -->
-    <header class="bg-gray-900/80 backdrop-blur-sm fixed top-0 left-0 right-0 z-50">
+    <header class="bg-gray-900/80 backdrop-blur-sm fixed top-0 left-0 right-0 z-50 border-b border-gray-800/60">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#" class="text-2xl font-bold text-white">
-                Brian Lahr <span class="accent-color">.</span>
-            </a>
-            <div class="hidden md:flex space-x-6 items-center">
+            <a href="#" class="text-2xl font-bold text-white">Brian Lahr <span class="accent-color">.</span></a>
+            <div class="hidden lg:flex space-x-6 items-center text-sm">
                 <a href="#about" class="hover:accent-color transition-colors duration-300">About</a>
+                <a href="#research" class="hover:accent-color transition-colors duration-300">Research</a>
                 <a href="#experience" class="hover:accent-color transition-colors duration-300">Experience</a>
                 <a href="#projects" class="hover:accent-color transition-colors duration-300">Projects</a>
-                <a href="#media" class="hover:accent-color transition-colors duration-300">Media</a>
+                <a href="#publications" class="hover:accent-color transition-colors duration-300">Publications</a>
+                <a href="#education" class="hover:accent-color transition-colors duration-300">Education</a>
                 <a href="#skills" class="hover:accent-color transition-colors duration-300">Skills</a>
                 <a href="#contact" class="accent-bg hover:bg-yellow-400 text-black font-semibold px-4 py-2 rounded-lg transition-colors duration-300">Contact</a>
             </div>
-            <!-- Mobile Menu Button -->
-            <button id="mobile-menu-button" class="md:hidden text-white">
+            <button id="mobile-menu-button" class="lg:hidden text-white" aria-label="Open navigation menu">
                 <i data-lucide="menu" class="w-6 h-6"></i>
             </button>
         </nav>
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-gray-900">
+        <div id="mobile-menu" class="hidden lg:hidden bg-gray-900 border-t border-gray-800">
             <a href="#about" class="block py-2 px-6 text-sm hover:bg-gray-800">About</a>
+            <a href="#research" class="block py-2 px-6 text-sm hover:bg-gray-800">Research</a>
             <a href="#experience" class="block py-2 px-6 text-sm hover:bg-gray-800">Experience</a>
             <a href="#projects" class="block py-2 px-6 text-sm hover:bg-gray-800">Projects</a>
-            <a href="#media" class="block py-2 px-6 text-sm hover:bg-gray-800">Media</a>
+            <a href="#publications" class="block py-2 px-6 text-sm hover:bg-gray-800">Publications</a>
+            <a href="#education" class="block py-2 px-6 text-sm hover:bg-gray-800">Education</a>
             <a href="#skills" class="block py-2 px-6 text-sm hover:bg-gray-800">Skills</a>
             <a href="#contact" class="block py-2 px-6 text-sm hover:bg-gray-800">Contact</a>
         </div>
@@ -68,222 +61,328 @@
 
     <main class="container mx-auto px-6">
 
-        <!-- =========== HERO SECTION =========== -->
         <section id="hero" class="min-h-screen flex flex-col justify-center items-start text-left pt-24">
-            <div class="max-w-3xl">
+            <div class="max-w-4xl">
                 <p class="text-lg accent-color font-medium mb-2">Hello, I'm Brian Lahr.</p>
-                <h1 class="text-5xl md:text-7xl font-extrabold text-white tracking-tight mb-4">AI, Data, and Hardware Innovator.</h1>
-                <h2 class="text-4xl md:text-6xl font-extrabold text-gray-400 tracking-tight mb-6">Solving challenges with engineering and code.</h2>
-                <p class="text-lg text-gray-300 max-w-xl mb-8">
-                    An Electrical Engineering student and Industrial Automation Technician with international experience, leveraging AI and data science to create impactful solutions, from academic research to startup environments.
+                <h1 class="text-5xl md:text-7xl font-extrabold text-white tracking-tight mb-4">Electrical Engineer & Researcher.</h1>
+                <h2 class="text-3xl md:text-5xl font-extrabold text-gray-400 tracking-tight mb-6">Audio, signal processing, AI, and intelligent sensing.</h2>
+                <p class="text-lg text-gray-300 max-w-2xl mb-8 leading-relaxed">
+                    MSc researcher at the University of São Paulo working on <span class="text-white font-semibold">binaural speech enhancement for hearing aids</span>, with a broader background in machine learning, microwave sensing, scientific computing, and experimental research.
                 </p>
-                <a href="#projects" class="accent-bg hover:bg-yellow-400 text-black font-bold py-3 px-6 rounded-lg text-lg transition-transform duration-300 inline-block transform hover:scale-105">
-                    View My Work
-                </a>
+                <div class="flex flex-wrap gap-4">
+                    <a href="#research" class="accent-bg hover:bg-yellow-400 text-black font-bold py-3 px-6 rounded-lg text-lg transition-transform duration-300 inline-block transform hover:scale-105">Current Research</a>
+                    <a href="https://github.com/BrianLahr" target="_blank" rel="noopener noreferrer" class="border border-gray-600 hover:border-yellow-300 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300">GitHub</a>
+                    <a href="https://www.linkedin.com/in/brian-nicholas-alves-rondon-lahr/?locale=en_US" target="_blank" rel="noopener noreferrer" class="border border-gray-600 hover:border-yellow-300 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300">LinkedIn</a>
+                </div>
             </div>
         </section>
 
-        <!-- =========== ABOUT SECTION =========== -->
         <section id="about" class="py-24">
             <h2 class="text-3xl font-bold text-white mb-2">About Me</h2>
-            <div class="w-24 h-1 accent-bg mb-12"></div>
+            <div class="section-rule mb-12"></div>
             <div class="grid grid-cols-1 md:grid-cols-5 gap-12 items-center">
-                <div class="md:col-span-3 text-gray-300 space-y-4">
+                <div class="md:col-span-3 text-gray-300 space-y-4 leading-relaxed">
                     <p>
-                        I am a bilingual Industrial Automation Technician and Electrical Engineering student with international experience in AI, Machine Learning, and Data Analysis. My background includes both advanced academic research—culminating in a publication in the high-impact journal <span class="accent-color font-semibold">Physics of Fluids</span>—and hands-on work in a fast-paced startup environment leading AI and data analysis projects.
+                        I am an <span class="text-white font-semibold">Electrical Engineer from the São Carlos School of Engineering, University of São Paulo (EESC-USP)</span>, with an emphasis in Electronics, and I am currently pursuing an MSc in Electrical Engineering at the same institution.
                     </p>
                     <p>
-                        My passion lies in leveraging technical expertise in software development, data science, and instrumentation to solve complex engineering challenges. I thrive on building complete solutions, from designing custom hardware with Arduino to developing full-stack applications with user-friendly interfaces.
+                        My current research investigates efficient information exchange between two hearing devices for <span class="accent-color font-semibold">distributed binaural speech enhancement</span>. I am interested in what should be communicated between the ears when bandwidth, latency, memory, and power are limited, connecting multichannel signal processing, machine learning, quantization, and hearing technology.
                     </p>
                     <p>
-                        My proactive approach to learning led me to an international exchange at Hof University in Germany, where I deepened my knowledge in Data Science and Applied Deep Learning. I am driven to apply this diverse skill set to drive innovation and create value.
+                        My earlier work spans physics-informed neural networks, RF and microwave sensing, research software, and FAPESP-funded industrial R&D. This combination has shaped the way I approach research: from mathematical modelling and algorithms to electromagnetic simulation, measurement, data analysis, and experimental validation.
                     </p>
                 </div>
                 <div class="md:col-span-2 flex justify-center">
                     <div class="w-64 h-64 rounded-lg bg-gray-900 border-2 accent-border p-2 transform transition-transform duration-500 hover:rotate-3 hover:scale-105">
-                        <img src="./assets/profile.png" alt="A professional headshot of Brian Lahr" class="rounded-md w-full h-full object-cover" onerror="this.onerror=null;this.src='https://placehold.co/400x400/111827/fffceb?text=Brian+Lahr';">
+                        <img src="./assets/profile.png" alt="Professional headshot of Brian Lahr" class="rounded-md w-full h-full object-cover" onerror="this.onerror=null;this.src='https://placehold.co/400x400/111827/fffceb?text=Brian+Lahr';">
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- =========== EXPERIENCE SECTION =========== -->
+        <section id="research" class="py-24">
+            <h2 class="text-3xl font-bold text-white mb-2">Current Research</h2>
+            <div class="section-rule mb-12"></div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="card rounded-lg p-7 border border-gray-800">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i data-lucide="audio-waveform" class="w-9 h-9 accent-color"></i>
+                        <h3 class="text-2xl font-bold text-white">Binaural Speech Enhancement</h3>
+                    </div>
+                    <p class="text-gray-300 leading-relaxed mb-5">
+                        My MSc research studies <span class="text-white">efficient interaural representations for distributed binaural speech enhancement under communication constraints</span>. The central question is simple: when two hearing devices cannot exchange unlimited data, what information is actually worth transmitting?
+                    </p>
+                    <p class="text-gray-300 leading-relaxed">
+                        The work compares local processing, coded remote audio, engineered low-rate features, processed signals, and learned rate-constrained representations under matched communication budgets, evaluating speech enhancement, spatial fidelity, and effective bitrate.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-6">
+                        <span class="bg-gray-800 text-xs font-semibold px-2 py-1 rounded-full">Speech Enhancement</span>
+                        <span class="bg-gray-800 text-xs font-semibold px-2 py-1 rounded-full">Binaural DSP</span>
+                        <span class="bg-gray-800 text-xs font-semibold px-2 py-1 rounded-full">Machine Learning</span>
+                        <span class="bg-gray-800 text-xs font-semibold px-2 py-1 rounded-full">Quantization</span>
+                        <span class="bg-gray-800 text-xs font-semibold px-2 py-1 rounded-full">Rate Constraints</span>
+                    </div>
+                </div>
+
+                <div class="card rounded-lg p-7 border border-gray-800">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i data-lucide="ear" class="w-9 h-9 accent-color"></i>
+                        <h3 class="text-2xl font-bold text-white">Tiresias Hearing-Aid Platform</h3>
+                    </div>
+                    <p class="text-gray-300 leading-relaxed mb-5">
+                        I am involved with <span class="text-white">Tiresias</span>, an open-source hearing-aid research platform developed at USP for real-time audio processing. It provides a practical path for testing algorithms under the latency, computational, memory, and power constraints that matter in wearable hearing devices.
+                    </p>
+                    <p class="text-gray-300 leading-relaxed mb-6">
+                        My longer-term goal is to connect algorithmic research in binaural enhancement and efficient learned representations with realistic embedded evaluation on hearing-device hardware.
+                    </p>
+                    <a href="https://aes2.org/publications/elibrary-page/?id=22897" target="_blank" rel="noopener noreferrer" class="font-semibold accent-color hover:text-yellow-300 transition-colors duration-300">About the Tiresias platform (AES) &rarr;</a>
+                </div>
+            </div>
+        </section>
+
         <section id="experience" class="py-24">
-            <h2 class="text-3xl font-bold text-white mb-2">Professional Experience</h2>
-            <div class="w-24 h-1 accent-bg mb-12"></div>
+            <h2 class="text-3xl font-bold text-white mb-2">Research & Professional Experience</h2>
+            <div class="section-rule mb-12"></div>
             <div class="space-y-12">
-                <!-- Experience Item 1 -->
                 <div class="flex flex-col md:flex-row gap-6">
-                    <p class="accent-color font-semibold md:w-1/4">Oct. 2024 - Present</p>
+                    <p class="accent-color font-semibold md:w-1/4">2026 - Present</p>
                     <div class="md:w-3/4">
-                        <h3 class="text-xl font-bold text-white">Software & AI Lead @ FAPESP-Funded Project</h3>
-                        <p class="text-gray-300 mt-2">
-                            Led software initiatives for a research project, managing deliverables and system architecture. Designed and built a full-stack data-centric application with a Streamlit front-end and a robust Python back-end, integrating multiple cloud and communication APIs for a fully automated workflow.
+                        <h3 class="text-xl font-bold text-white">MSc Researcher @ EESC-USP</h3>
+                        <p class="text-gray-300 mt-2 leading-relaxed">
+                            Researching distributed binaural speech enhancement for hearing aids, with emphasis on efficient interaural communication, low-rate representations, multichannel signal processing, machine learning, and preservation of spatial auditory information.
                         </p>
                     </div>
                 </div>
-                <!-- Experience Item 2 -->
+
                 <div class="flex flex-col md:flex-row gap-6">
-                    <p class="accent-color font-semibold md:w-1/4">Oct. 2022 - Sep. 2023</p>
+                    <p class="accent-color font-semibold md:w-1/4">2024 - 2025</p>
                     <div class="md:w-3/4">
-                        <h3 class="text-xl font-bold text-white">Undergraduate Researcher @ USP</h3>
-                        <p class="text-gray-300 mt-2">
-                           Conducted high-level academic research on fluid dynamics, resulting in a co-authored publication in the prestigious, peer-reviewed journal 'Physics of Fluids'. Developed and applied Physics-Informed Neural Networks to estimate pressure fields from velocity data.
+                        <h3 class="text-xl font-bold text-white">Researcher @ CSense Tecnologia</h3>
+                        <p class="text-gray-300 mt-2 leading-relaxed">
+                            Worked on a FAPESP-funded R&D project developing a portable sensing system for fresh concrete. My work focused on research software, experimental-data workflows, data analysis, and machine-learning tools supporting the development and evaluation of the sensing platform.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex flex-col md:flex-row gap-6">
+                    <p class="accent-color font-semibold md:w-1/4">2022 - 2023</p>
+                    <div class="md:w-3/4">
+                        <h3 class="text-xl font-bold text-white">Undergraduate Researcher @ ICMC-USP</h3>
+                        <p class="text-gray-300 mt-2 leading-relaxed">
+                            Developed and applied Physics-Informed Neural Networks (PINNs) to estimate pressure fields from experimental velocity data in fluid flows. The work contributed to a peer-reviewed article in <em>Physics of Fluids</em>.
                         </p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- =========== PROJECTS SECTION =========== -->
         <section id="projects" class="py-24">
-            <h2 class="text-3xl font-bold text-white mb-2">Featured Projects</h2>
-            <div class="w-24 h-1 accent-bg mb-12"></div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Project Card 1 -->
-                <div class="bg-gray-900 rounded-lg p-6 transform hover:-translate-y-2 transition-transform duration-300 flex flex-col">
-                    <h3 class="text-xl font-bold text-white mb-2">Full-Stack AI Data Platform</h3>
-                    <p class="text-gray-300 mb-4 flex-grow">A complete system featuring a user-friendly Streamlit interface for ML task submission, supported by a robust Python back-end that integrates cloud (Dropbox, Drive, Sheets) and communication (Telegram) APIs.</p>
+            <h2 class="text-3xl font-bold text-white mb-2">Selected Projects</h2>
+            <div class="section-rule mb-12"></div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="card rounded-lg p-6 transform hover:-translate-y-2 transition-transform duration-300 flex flex-col border border-gray-800">
+                    <i data-lucide="radio-tower" class="w-9 h-9 accent-color mb-4"></i>
+                    <p class="text-sm accent-color font-semibold mb-2">BACHELOR'S THESIS · 2026</p>
+                    <h3 class="text-xl font-bold text-white mb-2">Microwave Sensor for Fertilizer Quantification in Water</h3>
+                    <p class="text-gray-300 mb-4 flex-grow leading-relaxed">
+                        Optimized, fabricated, and experimentally characterized a microstrip hairpin-resonator sensor for quantifying urea and potassium chloride (KCl) dissolved in water. The geometry was optimized in Ansys HFSS using a figure of merit combining resonance-frequency shift, loaded quality factor, and electric-field interaction with the sample. The fabricated sensor was characterized with a vector network analyzer and tested from 6.25 to 200 ppm. Measurable concentration-dependent responses were obtained for both analytes, supporting the design as a proof of concept while also revealing important repeatability and sample-positioning limitations.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-800 text-xs font-semibold px-2 py-1 rounded-full">Ansys HFSS</span>
+                        <span class="bg-gray-800 text-xs font-semibold px-2 py-1 rounded-full">Hairpin Resonator</span>
+                        <span class="bg-gray-800 text-xs font-semibold px-2 py-1 rounded-full">S21 / VNA</span>
+                        <span class="bg-gray-800 text-xs font-semibold px-2 py-1 rounded-full">Sensor Optimization</span>
+                        <span class="bg-gray-800 text-xs font-semibold px-2 py-1 rounded-full">Experimental Validation</span>
+                    </div>
+                </div>
+
+                <div class="card rounded-lg p-6 transform hover:-translate-y-2 transition-transform duration-300 flex flex-col border border-gray-800">
+                    <i data-lucide="brain-circuit" class="w-9 h-9 accent-color mb-4"></i>
+                    <h3 class="text-xl font-bold text-white mb-2">Physics-Informed Neural Networks</h3>
+                    <p class="text-gray-300 mb-4 flex-grow leading-relaxed">
+                        Implemented PINN models for pressure-field reconstruction from velocity measurements, combining experimental fluid mechanics with neural PDE solvers and scientific machine learning.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="bg-gray-800 text-xs font-semibold px-2 py-1 rounded-full">TensorFlow</span>
+                        <span class="bg-gray-800 text-xs font-semibold px-2 py-1 rounded-full">Scientific ML</span>
+                        <span class="bg-gray-800 text-xs font-semibold px-2 py-1 rounded-full">PINNs</span>
+                        <span class="bg-gray-800 text-xs font-semibold px-2 py-1 rounded-full">Fluid Mechanics</span>
+                    </div>
+                </div>
+
+                <div class="card rounded-lg p-6 transform hover:-translate-y-2 transition-transform duration-300 flex flex-col border border-gray-800">
+                    <i data-lucide="database" class="w-9 h-9 accent-color mb-4"></i>
+                    <h3 class="text-xl font-bold text-white mb-2">Research Data & Automation Platform</h3>
+                    <p class="text-gray-300 mb-4 flex-grow leading-relaxed">
+                        Built a Streamlit-based research application and Python back end integrating cloud storage, spreadsheets, communication APIs, and automated processing workflows for experimental and machine-learning tasks.
+                    </p>
                     <div class="flex flex-wrap gap-2 mt-auto">
                         <span class="bg-gray-800 text-xs font-semibold px-2 py-1 rounded-full">Python</span>
                         <span class="bg-gray-800 text-xs font-semibold px-2 py-1 rounded-full">Streamlit</span>
                         <span class="bg-gray-800 text-xs font-semibold px-2 py-1 rounded-full">API Integration</span>
-                        <span class="bg-gray-800 text-xs font-semibold px-2 py-1 rounded-full">Full-Stack</span>
+                        <span class="bg-gray-800 text-xs font-semibold px-2 py-1 rounded-full">Research Software</span>
                     </div>
                 </div>
-                <!-- Project Card 2 -->
-                <div class="bg-gray-900 rounded-lg p-6 transform hover:-translate-y-2 transition-transform duration-300 flex flex-col">
-                    <h3 class="text-xl font-bold text-white mb-2">Physics-Informed Neural Networks</h3>
-                    <p class="text-gray-300 mb-4 flex-grow">Developed and implemented advanced machine learning models (PINNs) using TensorFlow to estimate complex pressure fields from fluid velocity data, contributing to a publication in 'Physics of Fluids'.</p>
-                    <div class="flex flex-wrap gap-2 mt-auto">
-                        <span class="bg-gray-800 text-xs font-semibold px-2 py-1 rounded-full">TensorFlow</span>
-                        <span class="bg-gray-800 text-xs font-semibold px-2 py-1 rounded-full">Machine Learning</span>
-                        <span class="bg-gray-800 text-xs font-semibold px-2 py-1 rounded-full">Physics</span>
-                        <span class="bg-gray-800 text-xs font-semibold px-2 py-1 rounded-full">Research</span>
-                    </div>
-                </div>
-                <!-- Project Card 3 -->
-                <div class="bg-gray-900 rounded-lg p-6 transform hover:-translate-y-2 transition-transform duration-300 flex flex-col">
-                    <h3 class="text-xl font-bold text-white mb-2">Custom IoT Instrumentation</h3>
-                    <p class="text-gray-300 mb-4 flex-grow">Designed and built custom electronic solutions, including a low-cost strain measurement device and an IoT-enabled sensor for 3D printers that communicates data via MQTT protocol.</p>
-                    <div class="flex flex-wrap gap-2 mt-auto">
-                        <span class="bg-gray-800 text-xs font-semibold px-2 py-1 rounded-full">Arduino</span>
-                        <span class="bg-gray-800 text-xs font-semibold px-2 py-1 rounded-full">IoT</span>
-                        <span class="bg-gray-800 text-xs font-semibold px-2 py-1 rounded-full">MQTT</span>
-                        <span class="bg-gray-800 text-xs font-semibold px-2 py-1 rounded-full">Hardware</span>
-                    </div>
-                </div>
+
             </div>
         </section>
 
-        <!-- =========== NEW "IN THE MEDIA" SECTION =========== -->
-        <section id="media" class="py-24">
-            <h2 class="text-3xl font-bold text-white mb-2">In the Media</h2>
-            <div class="w-24 h-1 accent-bg mb-12"></div>
+        <section id="publications" class="py-24">
+            <h2 class="text-3xl font-bold text-white mb-2">Publications & Media</h2>
+            <div class="section-rule mb-12"></div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- Media Card 1: Published Article -->
-                <div class="bg-gray-900 rounded-lg p-6 transform hover:-translate-y-2 transition-transform duration-300 flex flex-col">
-                    <div class="flex-shrink-0 mb-4">
-                        <i data-lucide="book-marked" class="w-10 h-10 accent-color"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-2">Published Research in Physics of Fluids</h3>
-                    <p class="text-gray-300 mb-6 flex-grow">Co-authored a peer-reviewed article on pressure field estimation using Physics-Informed Neural Networks, published in a high-impact journal by AIP Publishing.</p>
-                    <a href="https://pubs.aip.org/aip/pof/article-abstract/37/2/027110/3333591/Pressure-field-estimation-of-single-phase-flows?redirectedFrom=fulltext" target="_blank" rel="noopener noreferrer" class="inline-block mt-auto font-semibold accent-color hover:text-yellow-300 transition-colors duration-300">
-                        View Publication &rarr;
-                    </a>
+                <div class="card rounded-lg p-7 flex flex-col border border-gray-800">
+                    <div class="flex-shrink-0 mb-4"><i data-lucide="book-open" class="w-10 h-10 accent-color"></i></div>
+                    <p class="text-sm accent-color font-semibold mb-2">PHYSICS OF FLUIDS · 2025</p>
+                    <h3 class="text-xl font-bold text-white mb-2">Pressure field estimation of single-phase flows across a tube bundle using physics-informed neural networks</h3>
+                    <p class="text-gray-400 text-sm mb-4">Douglas Martins Rocha, Brian Nicholas Alves Rondon Lahr, Leandro Franco de Souza, Gherhardt Ribatski</p>
+                    <p class="text-gray-300 mb-6 flex-grow leading-relaxed">
+                        Co-authored peer-reviewed research on reconstructing pressure fields from experimental velocity measurements using Physics-Informed Neural Networks.
+                    </p>
+                    <a href="https://doi.org/10.1063/5.0247810" target="_blank" rel="noopener noreferrer" class="inline-block mt-auto font-semibold accent-color hover:text-yellow-300 transition-colors duration-300">View publication &rarr;</a>
                 </div>
-                <!-- Media Card 2: Startup Feature -->
-                <div class="bg-gray-900 rounded-lg p-6 transform hover:-translate-y-2 transition-transform duration-300 flex flex-col">
-                    <div class="flex-shrink-0 mb-4">
-                        <i data-lucide="newspaper" class="w-10 h-10 accent-color"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-2">Startup & USP Laboratory Collaboration</h3>
-                    <p class="text-gray-300 mb-6 flex-grow">Featured in an article by USP's news agency highlighting a FAPESP-funded project to optimize cement consumption in construction using innovative technology.</p>
-                    <a href="https://saocarlos.usp.br/laboratorio-da-eesc-inicia-cooperacao-com-startup-e-iniciativa-privada-em-projeto-que-desenvolve-ferramenta-capaz-de-otimizar-o-consumo-de-cimento-nas-construcoes/" target="_blank" rel="noopener noreferrer" class="inline-block mt-auto font-semibold accent-color hover:text-yellow-300 transition-colors duration-300">
-                        Read Article &rarr;
-                    </a>
+
+                <div class="card rounded-lg p-7 flex flex-col border border-gray-800">
+                    <div class="flex-shrink-0 mb-4"><i data-lucide="waves" class="w-10 h-10 accent-color"></i></div>
+                    <p class="text-sm accent-color font-semibold mb-2">IEEE SENSORS JOURNAL · 2026</p>
+                    <h3 class="text-xl font-bold text-white mb-2">A Microwave-Based Sensing Platform for Microplastic Detection and Quantification: A Machine Learning-Assisted Approach</h3>
+                    <p class="text-gray-400 text-sm mb-4">Mateus I. O. Souza, Leonardo Tarczewski, Brian N. Lahr, Achiles F. da Mota, Andrei Leitão, Vinicius M. Pepino, Ben-Hur V. Borges</p>
+                    <p class="text-gray-300 mb-6 flex-grow leading-relaxed">
+                        Co-authored research combining microwave sensing and machine learning for the detection, polymer classification, and quantification of microplastics in water using a 3.4 GHz spiral resonator.
+                    </p>
+                    <a href="https://doi.org/10.1109/JSEN.2026.3666661" target="_blank" rel="noopener noreferrer" class="inline-block mt-auto font-semibold accent-color hover:text-yellow-300 transition-colors duration-300">View publication &rarr;</a>
+                </div>
+
+                <div class="card rounded-lg p-7 flex flex-col border border-gray-800">
+                    <div class="flex-shrink-0 mb-4"><i data-lucide="newspaper" class="w-10 h-10 accent-color"></i></div>
+                    <p class="text-sm accent-color font-semibold mb-2">USP · RESEARCH & INNOVATION</p>
+                    <h3 class="text-xl font-bold text-white mb-2">CSense & EESC-USP Research Collaboration</h3>
+                    <p class="text-gray-300 mb-6 flex-grow leading-relaxed">
+                        USP coverage of the collaboration between CSense Tecnologia and the Laboratory of Industrial Multiphase Flows at EESC-USP in a FAPESP-supported project developing technology for fresh-concrete monitoring.
+                    </p>
+                    <a href="https://saocarlos.usp.br/laboratorio-da-eesc-inicia-cooperacao-com-startup-e-iniciativa-privada-em-projeto-que-desenvolve-ferramenta-capaz-de-otimizar-o-consumo-de-cimento-nas-construcoes/" target="_blank" rel="noopener noreferrer" class="inline-block mt-auto font-semibold accent-color hover:text-yellow-300 transition-colors duration-300">Read article &rarr;</a>
+                </div>
+
+                <div class="card rounded-lg p-7 flex flex-col border border-gray-800">
+                    <div class="flex-shrink-0 mb-4"><i data-lucide="telescope" class="w-10 h-10 accent-color"></i></div>
+                    <p class="text-sm accent-color font-semibold mb-2">IFSC-USP · 2019</p>
+                    <h3 class="text-xl font-bold text-white mb-2">Escola de Física Contemporânea — EFC 2019</h3>
+                    <p class="text-gray-300 mb-6 flex-grow leading-relaxed">
+                        Selected as one of 30 high-school students from across Brazil for a week-long scientific immersion at the Institute of Physics of São Carlos (IFSC-USP), with lectures, laboratory activities, research visits, and a final scientific seminar. I was also interviewed in IFSC-USP's coverage of the program about the role of challenge and scientific immersion in my academic interests.
+                    </p>
+                    <a href="https://www2.ifsc.usp.br/portal-ifsc/escola-de-fisica-contemporanea-efc-2019/" target="_blank" rel="noopener noreferrer" class="inline-block mt-auto font-semibold accent-color hover:text-yellow-300 transition-colors duration-300">Read IFSC-USP feature &rarr;</a>
                 </div>
             </div>
         </section>
 
-        <!-- =========== SKILLS SECTION =========== -->
+        <section id="education" class="py-24">
+            <h2 class="text-3xl font-bold text-white mb-2">Education</h2>
+            <div class="section-rule mb-12"></div>
+            <div class="space-y-10">
+                <div class="flex flex-col md:flex-row gap-6">
+                    <p class="accent-color font-semibold md:w-1/4">2026 - Present</p>
+                    <div class="md:w-3/4">
+                        <h3 class="text-xl font-bold text-white">MSc in Electrical Engineering</h3>
+                        <p class="text-gray-300 mt-1">São Carlos School of Engineering, University of São Paulo (EESC-USP)</p>
+                        <p class="text-gray-400 mt-2">Research focus: binaural speech enhancement, hearing technology, efficient interaural representations, and communication-constrained distributed processing.</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-col md:flex-row gap-6">
+                    <p class="accent-color font-semibold md:w-1/4">2021 - 2026</p>
+                    <div class="md:w-3/4">
+                        <h3 class="text-xl font-bold text-white">BSc in Electrical Engineering — Electronics</h3>
+                        <p class="text-gray-300 mt-1">São Carlos School of Engineering, University of São Paulo (EESC-USP)</p>
+                        <p class="text-gray-400 mt-2">Final GPA: 8.5/10. Bachelor's thesis: <em>Optimization and prototyping of a microwave sensor for quantification of fertilizers in water</em>, focused on electromagnetic optimization, fabrication, VNA characterization, and quantitative testing with urea and KCl solutions. Completed a Special Studies Certificate in Quantum Engineering.</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-col md:flex-row gap-6">
+                    <p class="accent-color font-semibold md:w-1/4">2024</p>
+                    <div class="md:w-3/4">
+                        <h3 class="text-xl font-bold text-white">International Academic Exchange</h3>
+                        <p class="text-gray-300 mt-1">Hof University of Applied Sciences, Germany</p>
+                        <p class="text-gray-400 mt-2">Coursework and international experience in Data Science and Applied Deep Learning.</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-col md:flex-row gap-6">
+                    <p class="accent-color font-semibold md:w-1/4">2018 - 2020</p>
+                    <div class="md:w-3/4">
+                        <h3 class="text-xl font-bold text-white">Technical Degree in Industrial Automation</h3>
+                        <p class="text-gray-300 mt-1">Colégio Técnico Industrial de Guaratinguetá, UNESP</p>
+                        <p class="text-gray-400 mt-2">Graduated with the highest final average among the 2020 class.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section id="skills" class="py-24">
-            <h2 class="text-3xl font-bold text-white mb-2">Key Skills</h2>
-            <div class="w-24 h-1 accent-bg mb-12"></div>
+            <h2 class="text-3xl font-bold text-white mb-2">Technical Focus</h2>
+            <div class="section-rule mb-12"></div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 <div>
-                    <h3 class="text-lg font-bold text-white mb-3">AI & Machine Learning</h3>
+                    <h3 class="text-lg font-bold text-white mb-3">Audio & Signal Processing</h3>
                     <ul class="space-y-2 text-gray-300 list-disc list-inside">
-                        <li>ML Model Development</li>
+                        <li>Binaural & multichannel audio</li>
+                        <li>Speech enhancement</li>
+                        <li>Time-frequency processing</li>
+                        <li>Quantization & low-rate representations</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-white mb-3">Machine Learning</h3>
+                    <ul class="space-y-2 text-gray-300 list-disc list-inside">
+                        <li>Neural network modelling</li>
                         <li>TensorFlow</li>
-                        <li>Physics-Informed NNs</li>
-                        <li>Applied Deep Learning</li>
+                        <li>Physics-Informed Neural Networks</li>
+                        <li>Scientific & applied ML</li>
                     </ul>
                 </div>
                 <div>
-                    <h3 class="text-lg font-bold text-white mb-3">Software Development</h3>
+                    <h3 class="text-lg font-bold text-white mb-3">RF, Microwaves & Sensing</h3>
                     <ul class="space-y-2 text-gray-300 list-disc list-inside">
-                        <li>Full-Stack Applications</li>
+                        <li>RF / microwave resonators</li>
+                        <li>Ansys HFSS electromagnetic simulation</li>
+                        <li>VNA measurements & S-parameters</li>
+                        <li>Sensor fabrication & experimental validation</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-white mb-3">Software & Research</h3>
+                    <ul class="space-y-2 text-gray-300 list-disc list-inside">
                         <li>Python & Streamlit</li>
-                        <li>Cloud API Integration</li>
-                        <li>System Architecture</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-lg font-bold text-white mb-3">Hardware & Instrumentation</h3>
-                    <ul class="space-y-2 text-gray-300 list-disc list-inside">
-                        <li>Arduino Platform</li>
-                        <li>Custom Circuit Design</li>
-                        <li>IoT & MQTT</li>
-                        <li>Sensor Integration</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-lg font-bold text-white mb-3">Core Competencies</h3>
-                    <ul class="space-y-2 text-gray-300 list-disc list-inside">
-                        <li>Scientific Research</li>
-                        <li>Data Analysis</li>
-                        <li>Project Collaboration</li>
-                        <li>Bilingual (EN/PT)</li>
+                        <li>Data analysis & automation</li>
+                        <li>Git / GitHub</li>
+                        <li>Scientific writing & reproducible experiments</li>
                     </ul>
                 </div>
             </div>
         </section>
 
-        <!-- =========== CONTACT SECTION =========== -->
         <section id="contact" class="py-24 text-center">
             <h2 class="text-3xl font-bold text-white mb-2">Get In Touch</h2>
-            <div class="w-24 h-1 accent-bg mb-8 mx-auto"></div>
-            <p class="text-gray-300 max-w-xl mx-auto mb-8">
-                I'm actively seeking new opportunities to apply my skills in data, AI, and engineering. Whether you have a project in mind or just want to connect, my inbox is always open.
+            <div class="section-rule mb-8 mx-auto"></div>
+            <p class="text-gray-300 max-w-2xl mx-auto mb-8 leading-relaxed">
+                I am interested in research collaborations and future PhD or R&D opportunities in audio and speech signal processing, hearing technology, efficient machine learning, and intelligent sensing.
             </p>
-            <a href="mailto:brian.lahr@usp.br" class="accent-bg hover:bg-yellow-400 text-black font-bold py-4 px-8 rounded-lg text-lg transition-transform duration-300 inline-block transform hover:scale-105">
-                Say Hello
-            </a>
+            <a href="mailto:brian.lahr@usp.br" class="accent-bg hover:bg-yellow-400 text-black font-bold py-4 px-8 rounded-lg text-lg transition-transform duration-300 inline-block transform hover:scale-105">Say Hello</a>
         </section>
     </main>
 
-    <!-- =========== FOOTER =========== -->
     <footer class="py-8 border-t border-gray-900">
         <div class="container mx-auto px-6 text-center text-gray-500">
-            <div class="flex justify-center space-x-6 mb-4">
-                <a href="https://github.com/BrianLahr" class="hover:accent-color transition-colors duration-300" aria-label="GitHub Profile" target="_blank" rel="noopener noreferrer">
-                    <i data-lucide="github" class="w-6 h-6"></i>
-                </a>
-                <a href="https://www.linkedin.com/in/brian-nicholas-alves-rondon-lahr/?locale=en_US" class="hover:accent-color transition-colors duration-300" aria-label="LinkedIn Profile" target="_blank" rel="noopener noreferrer">
-                    <i data-lucide="linkedin" class="w-6 h-6"></i>
-                </a>
-                <a href="mailto:brian.lahr@usp.br" class="hover:accent-color transition-colors duration-300" aria-label="Email">
-                    <i data-lucide="mail" class="w-6 h-6"></i>
-                </a>
+            <div class="flex justify-center flex-wrap gap-6 mb-4">
+                <a href="https://github.com/BrianLahr" class="hover:accent-color transition-colors duration-300" aria-label="GitHub Profile" target="_blank" rel="noopener noreferrer"><i data-lucide="github" class="w-6 h-6"></i></a>
+                <a href="https://www.linkedin.com/in/brian-nicholas-alves-rondon-lahr/?locale=en_US" class="hover:accent-color transition-colors duration-300" aria-label="LinkedIn Profile" target="_blank" rel="noopener noreferrer"><i data-lucide="linkedin" class="w-6 h-6"></i></a>
+                <a href="https://orcid.org/0000-0002-1399-6949" class="hover:accent-color transition-colors duration-300 text-sm font-semibold" aria-label="ORCID Profile" target="_blank" rel="noopener noreferrer">ORCID</a>
+                <a href="mailto:brian.lahr@usp.br" class="hover:accent-color transition-colors duration-300" aria-label="Email"><i data-lucide="mail" class="w-6 h-6"></i></a>
             </div>
             <p>Designed & Built by Brian Lahr</p>
-            <p>Inspired by modern web design trends.</p>
         </div>
     </footer>
 
     <script>
-        // --- Mobile Menu Toggle ---
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
 
@@ -291,17 +390,11 @@
             mobileMenu.classList.toggle('hidden');
         });
 
-        // --- Close mobile menu when a link is clicked ---
-        const mobileMenuLinks = document.querySelectorAll('#mobile-menu a');
-        mobileMenuLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
-            });
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
         });
-        
-        // --- Initialize Lucide Icons ---
+
         lucide.createIcons();
     </script>
-
 </body>
 </html>
