@@ -26,6 +26,33 @@
         .accent-border { border-color: #ffdb27; }
         .section-rule { width: 6rem; height: 0.25rem; background-color: #ffdb27; }
         .card { background-color: rgb(17 24 39); }
+        .soft-card {
+            background: linear-gradient(145deg, rgba(17,24,39,.95), rgba(3,7,18,.96));
+            border: 1px solid rgba(75,85,99,.55);
+        }
+        .eyebrow {
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            font-size: .72rem;
+            font-weight: 800;
+        }
+        .status-dot {
+            width: .5rem;
+            height: .5rem;
+            border-radius: 9999px;
+            background: #ffdb27;
+            box-shadow: 0 0 16px rgba(255,219,39,.55);
+        }
+        .metric-card {
+            border-top: 1px solid rgba(75,85,99,.65);
+            border-bottom: 1px solid rgba(75,85,99,.65);
+        }
+        .placeholder-panel {
+            background-image:
+                linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+            background-size: 22px 22px;
+        }
     </style>
 </head>
 <body class="text-[#fffceb]">
@@ -36,6 +63,7 @@
             <div class="hidden lg:flex space-x-6 items-center text-sm">
                 <a href="#about" class="hover:accent-color transition-colors duration-300">About</a>
                 <a href="#research" class="hover:accent-color transition-colors duration-300">Research</a>
+                <a href="#proof" class="hover:accent-color transition-colors duration-300">Proof of Work</a>
                 <a href="#experience" class="hover:accent-color transition-colors duration-300">Experience</a>
                 <a href="#projects" class="hover:accent-color transition-colors duration-300">Projects</a>
                 <a href="#publications" class="hover:accent-color transition-colors duration-300">Publications</a>
@@ -50,6 +78,7 @@
         <div id="mobile-menu" class="hidden lg:hidden bg-gray-900 border-t border-gray-800">
             <a href="#about" class="block py-2 px-6 text-sm hover:bg-gray-800">About</a>
             <a href="#research" class="block py-2 px-6 text-sm hover:bg-gray-800">Research</a>
+            <a href="#proof" class="block py-2 px-6 text-sm hover:bg-gray-800">Proof of Work</a>
             <a href="#experience" class="block py-2 px-6 text-sm hover:bg-gray-800">Experience</a>
             <a href="#projects" class="block py-2 px-6 text-sm hover:bg-gray-800">Projects</a>
             <a href="#publications" class="block py-2 px-6 text-sm hover:bg-gray-800">Publications</a>
@@ -61,82 +90,102 @@
 
     <main class="container mx-auto px-6">
 
-        <section id="hero" class="min-h-screen flex flex-col justify-center items-start text-left pt-24">
-            <div class="max-w-4xl">
-                <p class="text-lg accent-color font-medium mb-2">Hello, I'm Brian Lahr.</p>
-                <h1 class="text-5xl md:text-7xl font-extrabold text-white tracking-tight mb-4">Electrical Engineer & Researcher.</h1>
-                <h2 class="text-3xl md:text-5xl font-extrabold text-gray-400 tracking-tight mb-6">Audio, signal processing, AI, and intelligent sensing.</h2>
-                <p class="text-lg text-gray-300 max-w-2xl mb-8 leading-relaxed">
-                    MSc researcher at the University of São Paulo working on <span class="text-white font-semibold">binaural speech enhancement for hearing aids</span>, with a broader background in machine learning, microwave sensing, scientific computing, and experimental research.
-                </p>
-                <div class="flex flex-wrap gap-4">
-                    <a href="#research" class="accent-bg hover:bg-yellow-400 text-black font-bold py-3 px-6 rounded-lg text-lg transition-transform duration-300 inline-block transform hover:scale-105">Current Research</a>
-                    <a href="https://github.com/BrianLahr" target="_blank" rel="noopener noreferrer" class="border border-gray-600 hover:border-yellow-300 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300">GitHub</a>
-                    <a href="https://www.linkedin.com/in/brian-nicholas-alves-rondon-lahr/?locale=en_US" target="_blank" rel="noopener noreferrer" class="border border-gray-600 hover:border-yellow-300 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300">LinkedIn</a>
+        <section id="hero" class="min-h-screen flex flex-col justify-center pt-28 pb-16">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <div class="lg:col-span-8">
+                    <div class="flex items-center gap-3 mb-5">
+                        <span class="status-dot"></span>
+                        <p class="eyebrow accent-color">Electrical Engineer · MSc Researcher · EESC-USP</p>
+                    </div>
+                    <h1 class="text-5xl md:text-7xl font-extrabold text-white tracking-tight leading-[1.02] mb-5">
+                        Signal processing research for systems that have to work under real constraints.
+                    </h1>
+                    <p class="text-2xl md:text-3xl font-bold text-gray-400 tracking-tight mb-7">
+                        Hearing technology, efficient machine learning, and intelligent sensing.
+                    </p>
+                    <p class="text-lg text-gray-300 max-w-3xl mb-9 leading-relaxed">
+                        I am Brian Lahr, an Electrical Engineer and MSc researcher at the University of São Paulo. My current work asks how two hearing devices should exchange information when <span class="text-white font-semibold">bandwidth, latency, memory, and power are limited</span>. My broader research background spans scientific machine learning, microwave sensing, experimental validation, and research software.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#research" class="accent-bg hover:bg-yellow-400 text-black font-bold py-3 px-6 rounded-lg transition-transform duration-300 inline-block transform hover:scale-105">Explore Current Research</a>
+                        <a href="#proof" class="border border-gray-600 hover:border-yellow-300 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300">See Proof of Work</a>
+                        <a href="mailto:brian.lahr@usp.br" class="border border-gray-800 hover:border-gray-600 text-gray-300 font-semibold py-3 px-6 rounded-lg transition-colors duration-300">Contact</a>
+                    </div>
                 </div>
+                <aside class="lg:col-span-4 soft-card rounded-2xl p-7">
+                    <p class="eyebrow text-gray-500 mb-5">At a glance</p>
+                    <div class="space-y-5">
+                        <div><p class="text-3xl font-extrabold text-white">2</p><p class="text-sm text-gray-400 mt-1">peer-reviewed journal publications</p></div>
+                        <div class="border-t border-gray-800 pt-5"><p class="font-bold text-white">Current focus</p><p class="text-sm text-gray-400 mt-1">Binaural speech enhancement · low-rate interaural representations · hearing devices</p></div>
+                        <div class="border-t border-gray-800 pt-5"><p class="font-bold text-white">Research range</p><p class="text-sm text-gray-400 mt-1">DSP · ML · electromagnetic sensing · experimental research</p></div>
+                        <div class="border-t border-gray-800 pt-5"><p class="font-bold text-white">International experience</p><p class="text-sm text-gray-400 mt-1">Academic exchange at Hof University of Applied Sciences, Germany</p></div>
+                    </div>
+                    <div class="flex gap-4 mt-7 pt-6 border-t border-gray-800">
+                        <a href="https://github.com/BrianLahr" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:accent-color transition-colors" aria-label="GitHub"><i data-lucide="github" class="w-5 h-5"></i></a>
+                        <a href="https://www.linkedin.com/in/brian-nicholas-alves-rondon-lahr/?locale=en_US" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:accent-color transition-colors" aria-label="LinkedIn"><i data-lucide="linkedin" class="w-5 h-5"></i></a>
+                        <a href="https://orcid.org/0000-0002-1399-6949" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:accent-color transition-colors text-sm font-bold">ORCID</a>
+                    </div>
+                </aside>
+            </div>
+            <div class="grid grid-cols-2 lg:grid-cols-4 mt-16 metric-card">
+                <div class="py-5 pr-5"><p class="text-xs text-gray-500 uppercase tracking-wider">Research identity</p><p class="text-sm text-white font-semibold mt-1">Signal processing + ML</p></div>
+                <div class="py-5 px-5 border-l border-gray-800"><p class="text-xs text-gray-500 uppercase tracking-wider">Current domain</p><p class="text-sm text-white font-semibold mt-1">Hearing & audio</p></div>
+                <div class="py-5 px-5 border-l border-gray-800"><p class="text-xs text-gray-500 uppercase tracking-wider">Engineering style</p><p class="text-sm text-white font-semibold mt-1">Model → code → experiment</p></div>
+                <div class="py-5 pl-5 border-l border-gray-800"><p class="text-xs text-gray-500 uppercase tracking-wider">Next step</p><p class="text-sm text-white font-semibold mt-1">International PhD / R&D</p></div>
             </div>
         </section>
 
         <section id="about" class="py-24">
-            <h2 class="text-3xl font-bold text-white mb-2">About Me</h2>
-            <div class="section-rule mb-12"></div>
-            <div class="grid grid-cols-1 md:grid-cols-5 gap-12 items-center">
-                <div class="md:col-span-3 text-gray-300 space-y-4 leading-relaxed">
-                    <p>
-                        I am an <span class="text-white font-semibold">Electrical Engineer from the São Carlos School of Engineering, University of São Paulo (EESC-USP)</span>, with an emphasis in Electronics, and I am currently pursuing an MSc in Electrical Engineering at the same institution.
-                    </p>
-                    <p>
-                        My current research investigates efficient information exchange between two hearing devices for <span class="accent-color font-semibold">distributed binaural speech enhancement</span>. I am interested in what should be communicated between the ears when bandwidth, latency, memory, and power are limited, connecting multichannel signal processing, machine learning, quantization, and hearing technology.
-                    </p>
-                    <p>
-                        My earlier work spans physics-informed neural networks, RF and microwave sensing, research software, and FAPESP-funded industrial R&D. This combination has shaped the way I approach research: from mathematical modelling and algorithms to electromagnetic simulation, measurement, data analysis, and experimental validation.
-                    </p>
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+                <div class="lg:col-span-4">
+                    <h2 class="text-3xl font-bold text-white mb-2">Research Profile</h2>
+                    <div class="section-rule mb-7"></div>
+                    <p class="text-gray-500 leading-relaxed">My specialization is becoming increasingly focused, while my earlier projects provide a broader experimental engineering foundation.</p>
                 </div>
-                <div class="md:col-span-2 flex justify-center">
-                    <div class="w-64 h-64 rounded-lg bg-gray-900 border-2 accent-border p-2 transform transition-transform duration-500 hover:rotate-3 hover:scale-105">
-                        <img src="./assets/profile.png" alt="Professional headshot of Brian Lahr" class="rounded-md w-full h-full object-cover" onerror="this.onerror=null;this.src='https://placehold.co/400x400/111827/fffceb?text=Brian+Lahr';">
+                <div class="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="text-gray-300 space-y-4 leading-relaxed">
+                        <p>I am an <span class="text-white font-semibold">Electrical Engineer from EESC-USP</span>, with an emphasis in Electronics, currently pursuing an MSc in Electrical Engineering at the same institution.</p>
+                        <p>My main research direction is <span class="accent-color font-semibold">resource-efficient signal processing and machine learning for hearing and audio systems</span>. I am especially interested in algorithms that remain useful when communication rate, computation, latency, memory, or energy are constrained.</p>
+                    </div>
+                    <div class="text-gray-300 space-y-4 leading-relaxed">
+                        <p>Before moving into hearing technology, I worked with physics-informed neural networks, microwave resonator sensing, experimental characterization, and FAPESP-funded applied R&D.</p>
+                        <p>That background is useful because I like research that goes beyond training a model: <span class="text-white font-semibold">formulate the problem, build the system, measure what actually happens, and make the result reproducible.</span></p>
                     </div>
                 </div>
             </div>
         </section>
 
         <section id="research" class="py-24">
-            <h2 class="text-3xl font-bold text-white mb-2">Current Research</h2>
-            <div class="section-rule mb-12"></div>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div class="card rounded-lg p-7 border border-gray-800">
-                    <div class="flex items-center gap-3 mb-4">
-                        <i data-lucide="audio-waveform" class="w-9 h-9 accent-color"></i>
-                        <h3 class="text-2xl font-bold text-white">Binaural Speech Enhancement</h3>
-                    </div>
-                    <p class="text-gray-300 leading-relaxed mb-5">
-                        My MSc research studies <span class="text-white">efficient interaural representations for distributed binaural speech enhancement under communication constraints</span>. The central question is simple: when two hearing devices cannot exchange unlimited data, what information is actually worth transmitting?
-                    </p>
-                    <p class="text-gray-300 leading-relaxed">
-                        The work compares local processing, coded remote audio, engineered low-rate features, processed signals, and learned rate-constrained representations under matched communication budgets, evaluating speech enhancement, spatial fidelity, and effective bitrate.
-                    </p>
-                    <div class="flex flex-wrap gap-2 mt-6">
-                        <span class="bg-gray-800 text-xs font-semibold px-2 py-1 rounded-full">Speech Enhancement</span>
-                        <span class="bg-gray-800 text-xs font-semibold px-2 py-1 rounded-full">Binaural DSP</span>
-                        <span class="bg-gray-800 text-xs font-semibold px-2 py-1 rounded-full">Machine Learning</span>
-                        <span class="bg-gray-800 text-xs font-semibold px-2 py-1 rounded-full">Quantization</span>
-                        <span class="bg-gray-800 text-xs font-semibold px-2 py-1 rounded-full">Rate Constraints</span>
-                    </div>
-                </div>
+            <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
+                <div><p class="eyebrow accent-color mb-3">Flagship project · MSc research</p><h2 class="text-3xl md:text-4xl font-bold text-white">Communication-Constrained Binaural Speech Enhancement</h2></div>
+                <div class="flex items-center gap-2 text-sm text-gray-400"><span class="status-dot"></span>Active research · 2026–present</div>
+            </div>
+            <div class="soft-card rounded-2xl p-7 md:p-9 mb-8">
+                <p class="text-2xl md:text-3xl text-white font-bold leading-snug max-w-4xl">What information is worth communicating between two hearing devices when the communication channel is limited?</p>
+                <p class="text-gray-300 leading-relaxed mt-6 max-w-4xl">My MSc compares different message classes under matched communication budgets: no communication, coded remote audio, deterministic low-rate features, locally processed signals, and learned quantized representations. The receiver architecture is controlled so that the main experimental variable is <span class="text-white font-semibold">what the devices communicate</span>, not how much model capacity each method receives.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+                <div class="card rounded-xl p-6 border border-gray-800"><p class="eyebrow text-gray-500 mb-3">Dataset</p><p class="font-bold text-white">Clarity CEC2</p><p class="text-sm text-gray-400 mt-2">Controlled hearing-aid speech-enhancement scenes with disjoint speakers across splits.</p></div>
+                <div class="card rounded-xl p-6 border border-gray-800"><p class="eyebrow text-gray-500 mb-3">Communication</p><p class="font-bold text-white">16 · 32 · 64 kbit/s</p><p class="text-sm text-gray-400 mt-2">Matched per-direction operating points with effective bitrate explicitly measured.</p></div>
+                <div class="card rounded-xl p-6 border border-gray-800"><p class="eyebrow text-gray-500 mb-3">Core comparison</p><p class="font-bold text-white">Audio · Features · Learned Latents</p><p class="text-sm text-gray-400 mt-2">A rate–performance comparison rather than a single-model benchmark.</p></div>
+                <div class="card rounded-xl p-6 border border-gray-800"><p class="eyebrow text-gray-500 mb-3">Evaluation</p><p class="font-bold text-white">Enhancement · Spatial Fidelity · Rate</p><p class="text-sm text-gray-400 mt-2">Performance is evaluated together with preservation of binaural information.</p></div>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
+                <div class="card rounded-xl p-7 border border-gray-800"><div class="flex items-center gap-3 mb-4"><i data-lucide="ear" class="w-8 h-8 accent-color"></i><h3 class="text-xl font-bold text-white">Tiresias Research Platform</h3></div><p class="text-gray-300 leading-relaxed">I am also involved with <span class="text-white font-semibold">Tiresias</span>, an open-source hearing-aid development platform created at USP. The central thesis of my MSc remains computational, but Tiresias provides a path toward real-time and hardware-constrained validation when appropriate.</p><a href="https://aes2.org/publications/elibrary-page/?id=22897" target="_blank" rel="noopener noreferrer" class="inline-block mt-5 font-semibold accent-color hover:text-yellow-300 transition-colors">Tiresias at the AES 158th Convention →</a></div>
+                <div class="card rounded-xl p-7 border border-gray-800"><div class="flex items-center gap-3 mb-4"><i data-lucide="route" class="w-8 h-8 accent-color"></i><h3 class="text-xl font-bold text-white">What this work is building toward</h3></div><p class="text-gray-300 leading-relaxed">A research profile that connects <span class="text-white">multichannel DSP, speech enhancement, information-efficient representations, modern ML, and realistic implementation constraints</span> — useful both for doctoral research and industrial R&D in hearing and audio technology.</p></div>
+            </div>
+        </section>
 
-                <div class="card rounded-lg p-7 border border-gray-800">
-                    <div class="flex items-center gap-3 mb-4">
-                        <i data-lucide="ear" class="w-9 h-9 accent-color"></i>
-                        <h3 class="text-2xl font-bold text-white">Tiresias Hearing-Aid Platform</h3>
-                    </div>
-                    <p class="text-gray-300 leading-relaxed mb-5">
-                        I am involved with <span class="text-white">Tiresias</span>, an open-source hearing-aid research platform developed at USP for real-time audio processing. It provides a practical path for testing algorithms under the latency, computational, memory, and power constraints that matter in wearable hearing devices.
-                    </p>
-                    <p class="text-gray-300 leading-relaxed mb-6">
-                        My longer-term goal is to connect algorithmic research in binaural enhancement and efficient learned representations with realistic embedded evaluation on hearing-device hardware.
-                    </p>
-                    <a href="https://aes2.org/publications/elibrary-page/?id=22897" target="_blank" rel="noopener noreferrer" class="font-semibold accent-color hover:text-yellow-300 transition-colors duration-300">About the Tiresias platform (AES) &rarr;</a>
-                </div>
+        <section id="proof" class="py-24">
+            <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
+                <div><p class="eyebrow accent-color mb-3">Evidence, not buzzwords</p><h2 class="text-3xl md:text-4xl font-bold text-white">Proof of Work</h2></div>
+                <p class="text-gray-500 max-w-xl">This section is intentionally built to become more concrete over time. Items marked “in progress” are work I am actively developing rather than finished claims.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <article class="soft-card rounded-2xl overflow-hidden"><div class="placeholder-panel min-h-44 p-7 flex items-end"><div><span class="text-xs font-bold accent-color border accent-border rounded-full px-3 py-1">IN PROGRESS</span><p class="text-gray-500 text-sm mt-4">Future slot: rate–quality / rate–spatial-fidelity plot</p></div></div><div class="p-7 border-t border-gray-800"><h3 class="text-xl font-bold text-white">Binaural communication benchmark</h3><p class="text-gray-300 mt-3 leading-relaxed">A reproducible comparison of message classes under common receiver architecture and matched communication budgets.</p><p class="text-sm text-gray-500 mt-5"><span class="text-gray-300 font-semibold">To add later:</span> main figure, repository, experiment card, and first-author publication/preprint.</p></div></article>
+                <article class="soft-card rounded-2xl overflow-hidden"><div class="placeholder-panel min-h-44 p-7 flex items-end"><div><span class="text-xs font-bold accent-color border accent-border rounded-full px-3 py-1">IN PROGRESS</span><p class="text-gray-500 text-sm mt-4">Future slot: waveform / spectrogram / audio player</p></div></div><div class="p-7 border-t border-gray-800"><h3 class="text-xl font-bold text-white">Quantization & speech-coding notebooks</h3><p class="text-gray-300 mt-3 leading-relaxed">Hands-on studies connecting quantization error, bitrate, source coding, codecs, and perceptual consequences in speech/audio.</p><p class="text-sm text-gray-500 mt-5"><span class="text-gray-300 font-semibold">To add later:</span> polished notebook, LC3plus validation example, short technical note, and audio samples.</p></div></article>
+                <article class="soft-card rounded-2xl overflow-hidden"><div class="placeholder-panel min-h-44 p-7 flex items-end"><div><span class="text-xs font-bold text-gray-300 border border-gray-600 rounded-full px-3 py-1">PLANNED</span><p class="text-gray-500 text-sm mt-4">Future slot: latency / RAM / power / real-time demo</p></div></div><div class="p-7 border-t border-gray-800"><h3 class="text-xl font-bold text-white">Constrained-hardware evaluation</h3><p class="text-gray-300 mt-3 leading-relaxed">A future bridge from algorithmic results to practical hearing-device constraints using Tiresias and/or suitable low-power inference hardware.</p><p class="text-sm text-gray-500 mt-5"><span class="text-gray-300 font-semibold">Target evidence:</span> real-time audio, measured latency, memory footprint, and power/compute profiling.</p></div></article>
+                <article class="soft-card rounded-2xl overflow-hidden"><div class="placeholder-panel min-h-44 p-7 flex items-end"><div><span class="text-xs font-bold text-green-300 border border-green-900 rounded-full px-3 py-1">COMPLETED</span><p class="text-gray-500 text-sm mt-4">Bachelor's thesis · electromagnetic modelling + fabrication + VNA experiments</p></div></div><div class="p-7 border-t border-gray-800"><h3 class="text-xl font-bold text-white">Microwave sensing of fertilizers in water</h3><p class="text-gray-300 mt-3 leading-relaxed">Optimized a hairpin resonator in HFSS, fabricated the sensor, designed the measurement procedure, and quantified its concentration-dependent response to urea and KCl.</p><p class="text-sm text-gray-500 mt-5"><span class="text-gray-300 font-semibold">Available evidence:</span> final thesis, simulation results, S-parameter measurements, calibration curves, sensitivity and detection-limit analysis.</p></div></article>
             </div>
         </section>
 
@@ -177,7 +226,8 @@
         </section>
 
         <section id="projects" class="py-24">
-            <h2 class="text-3xl font-bold text-white mb-2">Selected Projects</h2>
+            <p class="eyebrow accent-color mb-3">Earlier work</p>
+            <h2 class="text-3xl font-bold text-white mb-2">Research & Engineering Projects</h2>
             <div class="section-rule mb-12"></div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div class="card rounded-lg p-6 transform hover:-translate-y-2 transition-transform duration-300 flex flex-col border border-gray-800">
@@ -248,7 +298,7 @@
                     <h3 class="text-xl font-bold text-white mb-2">A Microwave-Based Sensing Platform for Microplastic Detection and Quantification: A Machine Learning-Assisted Approach</h3>
                     <p class="text-gray-400 text-sm mb-4">Mateus I. O. Souza, Leonardo Tarczewski, Brian N. Lahr, Achiles F. da Mota, Andrei Leitão, Vinicius M. Pepino, Ben-Hur V. Borges</p>
                     <p class="text-gray-300 mb-6 flex-grow leading-relaxed">
-                        Co-authored peer-reviewd research combining microwave sensing and machine learning for the detection, polymer classification, and quantification of microplastics in water using a 3.4 GHz spiral resonator.
+                        Co-authored research combining microwave sensing and machine learning for the detection, polymer classification, and quantification of microplastics in water using a 3.4 GHz spiral resonator.
                     </p>
                     <a href="https://doi.org/10.1109/JSEN.2026.3666661" target="_blank" rel="noopener noreferrer" class="inline-block mt-auto font-semibold accent-color hover:text-yellow-300 transition-colors duration-300">View publication &rarr;</a>
                 </div>
@@ -318,56 +368,28 @@
         </section>
 
         <section id="skills" class="py-24">
-            <h2 class="text-3xl font-bold text-white mb-2">Technical Focus</h2>
+            <p class="eyebrow accent-color mb-3">How I work</p>
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-2">Technical Profile</h2>
             <div class="section-rule mb-12"></div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div>
-                    <h3 class="text-lg font-bold text-white mb-3">Audio & Signal Processing</h3>
-                    <ul class="space-y-2 text-gray-300 list-disc list-inside">
-                        <li>Binaural & multichannel audio</li>
-                        <li>Speech enhancement</li>
-                        <li>Time-frequency processing</li>
-                        <li>Quantization & low-rate representations</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-lg font-bold text-white mb-3">Machine Learning</h3>
-                    <ul class="space-y-2 text-gray-300 list-disc list-inside">
-                        <li>Neural network modelling</li>
-                        <li>TensorFlow</li>
-                        <li>Physics-Informed Neural Networks</li>
-                        <li>Scientific & applied ML</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-lg font-bold text-white mb-3">RF, Microwaves & Sensing</h3>
-                    <ul class="space-y-2 text-gray-300 list-disc list-inside">
-                        <li>RF / microwave resonators</li>
-                        <li>Ansys HFSS electromagnetic simulation</li>
-                        <li>VNA measurements & S-parameters</li>
-                        <li>Sensor fabrication & experimental validation</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-lg font-bold text-white mb-3">Software & Research</h3>
-                    <ul class="space-y-2 text-gray-300 list-disc list-inside">
-                        <li>Python & Streamlit</li>
-                        <li>Data analysis & automation</li>
-                        <li>Git / GitHub</li>
-                        <li>Scientific writing & reproducible experiments</li>
-                    </ul>
-                </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+                <div class="card rounded-xl p-7 border border-gray-800"><h3 class="text-lg font-bold text-white mb-3">Algorithmic research</h3><p class="text-gray-300 leading-relaxed">Signal processing, time-frequency methods, binaural/multichannel audio, speech enhancement, quantization, low-rate representations, machine learning, and scientific ML.</p></div>
+                <div class="card rounded-xl p-7 border border-gray-800"><h3 class="text-lg font-bold text-white mb-3">Experimental engineering</h3><p class="text-gray-300 leading-relaxed">From electromagnetic simulation to fabrication and measurement: Ansys HFSS, microwave resonators, VNA measurements, S-parameters, calibration, and experimental validation.</p></div>
+                <div class="card rounded-xl p-7 border border-gray-800"><h3 class="text-lg font-bold text-white mb-3">Research software</h3><p class="text-gray-300 leading-relaxed">Python, TensorFlow, Streamlit, numerical analysis, data-processing pipelines, Git/GitHub, experiment automation, visualization, and reproducible research workflows.</p></div>
+                <div class="card rounded-xl p-7 border border-gray-800"><h3 class="text-lg font-bold text-white mb-3">Research communication</h3><p class="text-gray-300 leading-relaxed">Peer-reviewed scientific writing, technical documentation, literature synthesis, experiment design, collaboration across engineering disciplines, and communication in Portuguese and English.</p></div>
+            </div>
+            <div class="soft-card rounded-xl p-6"><p class="text-sm text-gray-400 leading-relaxed"><span class="text-white font-semibold">Deliberately not listed as “skills” yet:</span> technologies I am actively learning but do not want to market before I can demonstrate them with evidence. As my MSc progresses, this page will add concrete proof for real-time audio implementation, embedded/low-power inference, and C/C++ when those capabilities are backed by working systems.</p></div>
+        </section>
+
+        <section id="contact" class="py-28">
+            <div class="soft-card rounded-2xl p-8 md:p-12 text-center max-w-4xl mx-auto">
+                <p class="eyebrow accent-color mb-4">Research · PhD · R&D</p>
+                <h2 class="text-3xl md:text-5xl font-bold text-white mb-6">Interested in building useful signal-processing systems together?</h2>
+                <p class="text-gray-300 max-w-2xl mx-auto mb-4 leading-relaxed">I am interested in research collaborations and future PhD or R&D opportunities in audio and speech signal processing, hearing technology, efficient machine learning, and adjacent signal-processing problems.</p>
+                <p class="text-gray-500 max-w-2xl mx-auto mb-9 leading-relaxed">I am particularly interested in international research environments, including opportunities in Australia and Germany, while remaining open to strong research teams elsewhere.</p>
+                <div class="flex flex-wrap justify-center gap-4"><a href="mailto:brian.lahr@usp.br" class="accent-bg hover:bg-yellow-400 text-black font-bold py-4 px-8 rounded-lg text-lg transition-transform duration-300 inline-block transform hover:scale-105">Email me</a><a href="https://www.linkedin.com/in/brian-nicholas-alves-rondon-lahr/?locale=en_US" target="_blank" rel="noopener noreferrer" class="border border-gray-600 hover:border-yellow-300 text-white font-semibold py-4 px-8 rounded-lg transition-colors duration-300">LinkedIn</a></div>
             </div>
         </section>
 
-        <section id="contact" class="py-24 text-center">
-            <h2 class="text-3xl font-bold text-white mb-2">Get In Touch</h2>
-            <div class="section-rule mb-8 mx-auto"></div>
-            <p class="text-gray-300 max-w-2xl mx-auto mb-8 leading-relaxed">
-                I am interested in research collaborations and future PhD or R&D opportunities in audio and speech signal processing, hearing technology and efficient machine learning.
-            </p>
-            <a href="mailto:brian.lahr@usp.br" class="accent-bg hover:bg-yellow-400 text-black font-bold py-4 px-8 rounded-lg text-lg transition-transform duration-300 inline-block transform hover:scale-105">Say Hello</a>
-        </section>
     </main>
 
     <footer class="py-8 border-t border-gray-900">
@@ -378,7 +400,7 @@
                 <a href="https://orcid.org/0000-0002-1399-6949" class="hover:accent-color transition-colors duration-300 text-sm font-semibold" aria-label="ORCID Profile" target="_blank" rel="noopener noreferrer">ORCID</a>
                 <a href="mailto:brian.lahr@usp.br" class="hover:accent-color transition-colors duration-300" aria-label="Email"><i data-lucide="mail" class="w-6 h-6"></i></a>
             </div>
-            <p>Designed & Built by Brian Lahr</p>
+            <p>Designed & Built by Brian Lahr · Last updated September 2026</p>
         </div>
     </footer>
 
