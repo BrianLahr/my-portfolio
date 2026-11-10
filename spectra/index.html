@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0a101a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Spectra">
+  <meta name="description" content="Private, real-time vocal spectrogram, pitch tracking and harmonic measurements in your browser.">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="./styles.css">
+  <title>Spectra | Live Vocal Instrument</title>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="identity">
+        <div class="mark" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+        <div><div class="brand">SPECTRA <small> / WEB</small></div><div class="microcopy">VOCAL &amp; SPECTRAL INSTRUMENT · v0.4.0</div></div>
+      </div>
+      <div class="status" id="status-pill"><span class="status-dot"></span><span id="status-short">READY</span></div>
+    </header>
+
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <div class="eyebrow">REAL-TIME SIGNAL ANALYSIS · PRIVATE BY DESIGN</div>
+        <h1 id="hero-title">See the physics <span>in your voice.</span></h1>
+        <p>Live microphone spectrogram, musical pitch and harmonic structure — processed entirely on your device.</p>
+      </div>
+      <div class="hero-actions">
+        <button class="btn btn-primary" type="button" id="start-btn"><span class="btn-icon" aria-hidden="true">◉</span> Start microphone</button>
+        <button class="btn btn-secondary" type="button" id="demo-btn">▶ Demo signal</button>
+        <button class="btn btn-quiet" type="button" id="stop-btn" disabled>■ Stop</button>
+      </div>
+      <div class="message" role="status" aria-live="polite" id="message">Tap “Start microphone” to request permission, or try the synthetic demo first.</div>
+    </section>
+
+    <section class="input-bar" aria-label="Input diagnostics">
+      <div class="input-primary"><span class="overline">INPUT SOURCE</span><strong id="input-name">No active input</strong><span class="input-meta" id="input-meta">Waiting for audio · No recording or upload</span></div>
+      <div class="level-cluster"><div class="level-head"><span>INPUT LEVEL</span><span id="rms-num">— dBFS</span></div><div class="meter"><div id="rms-bar"></div></div><div class="input-extra" id="input-extra">STFT 2048 / 512 · MIC OFF</div></div>
+    </section>
+
+    <section class="metrics" aria-label="Pitch and harmonic measurements">
+      <article class="metric metric-note"><div class="overline">DETECTED NOTE <span class="tip">12-TET · A4 440 Hz</span></div><div class="big-note" id="note">—</div><div class="metric-sub" id="pitch-hz">NO STABLE PITCH</div></article>
+      <article class="metric"><div class="overline">TUNING</div><div class="metric-value" id="cents">— <span class="unit">¢</span></div><div class="tune-scale"><span>−50</span><div class="tune-track"><div class="tune-center"></div><i id="cents-marker"></i></div><span>+50</span></div></article>
+      <article class="metric"><div class="overline">YIN PERIODICITY</div><div class="metric-value" id="confidence">—<span class="unit"> %</span></div><div class="progress"><span id="confidence-bar"></span></div><div class="metric-small">Not a calibrated probability</div></article>
+      <article class="metric"><div class="overline">H2–H8 / H1</div><div class="metric-value" id="harmonic">—<span class="unit"> %</span></div><div class="metric-small" id="harmonic-db">Harmonic richness · not vocal THD</div></article>
+    </section>
+
+    <section class="viz panel" aria-labelledby="spec-title">
+      <div class="panel-heading"><div><div class="section-index">01 / INSTANTANEOUS SPECTRUM</div><h2 id="spec-title">Magnitude spectrum</h2></div><div class="viz-meta" id="spectrum-meta">WAITING FOR SIGNAL</div></div>
+      <canvas id="spectrum" role="img" aria-label="Instantaneous magnitude spectrum with fundamental and harmonic markers"></canvas>
+    </section>
+
+    <section class="viz panel" aria-labelledby="gram-title">
+      <div class="panel-heading"><div><div class="section-index">02 / TIME–FREQUENCY VIEW</div><h2 id="gram-title">Live spectrogram</h2></div><div class="viz-meta" id="gram-meta">LOG SCALE · 12 s</div></div>
+      <div class="spectrogram-wrap"><canvas id="spectrogram" role="img" aria-label="Live scrolling spectrogram, newest audio on the right"></canvas><div class="color-scale"><span id="scale-max">−20</span><div class="gradient"></div><span id="scale-min">−105</span><span class="dbfs">dBFS</span></div></div>
+      <div class="caption-row"><span>NEWEST AUDIO → RIGHT</span><span id="analyzer-fps">DISPLAY — FPS</span></div>
+    </section>
+
+    <section class="settings panel" aria-labelledby="settings-title">
+      <div class="panel-heading"><div><div class="section-index">03 / CONTROL PANEL</div><h2 id="settings-title">Acquisition &amp; display</h2></div><button type="button" class="mini-btn" id="clear-btn">Clear history</button></div>
+      <div class="settings-grid">
+        <label>Audio input <select id="device-select"><option value="">System default</option></select></label>
+        <label>Input channel <select id="channel-select"><option value="auto">Auto (stronger channel)</option><option value="1">Channel 1</option><option value="2">Channel 2</option></select></label>
+        <label>STFT window <select id="fft-select"><option value="1024">1024 samples</option><option value="2048" selected>2048 samples</option><option value="4096">4096 samples</option></select></label>
+        <label>Frequency axis <select id="axis-select"><option value="log" selected>Logarithmic</option><option value="linear">Linear</option></select></label>
+        <label>History <select id="history-select"><option value="6">6 seconds</option><option value="12" selected>12 seconds</option><option value="20">20 seconds</option></select></label>
+        <label>Floor (dBFS) <select id="floor-select"><option value="-120">−120</option><option value="-105" selected>−105</option><option value="-90">−90</option><option value="-75">−75</option></select></label>
+      </div>
+      <div class="settings-footer"><span id="signal-diagnostic">Microphone analysis remains on this device.</span><button type="button" class="mini-btn" id="snapshot-btn">Save spectrogram PNG</button></div>
+    </section>
+
+    <details class="information panel"><summary>Measurement notes, privacy and iPhone tips</summary>
+      <div class="info-content">
+        <p><strong>Pitch is periodicity, not a formant.</strong> YIN detects approximately 65–1050 Hz, with a causal observation window near 100 ms. Very noisy or polyphonic sources may show “no stable pitch”, octave errors or false notes.</p>
+        <p><strong>H2–H8 / H1 is not THD.</strong> Normal voices have harmonics, which are strongly influenced by vowels, microphone response and vocal tract resonances. Do not use this measurement to certify a vocal effect or vocal safety.</p>
+        <p><strong>Privacy:</strong> all microphone samples stay inside this browser session. No recording, upload, analytics or external fonts/scripts. HTTPS and a user gesture are required for microphone permission. The app stops microphone capture when leaving the foreground.</p>
+        <p><strong>iPhone:</strong> open in Safari → Share → Add to Home Screen → Open as Web App. Safari may request microphone access again on later launches. Use headphones if another app is playing sound.</p>
+      </div>
+    </details>
+    <footer><span>© 2026 · Spectra Instrument · Browser edition</span><span><a class="portfolio-link" href="/" aria-label="Back to Brian Lahr portfolio">← Back to portfolio</a> · Real-time DSP · STFT / YIN / Harmonic analysis</span></footer>
+  </div>
+  <script type="module" src="./app.mjs"></script>
+</body>
+</html>
