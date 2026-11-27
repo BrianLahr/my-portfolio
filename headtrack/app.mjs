@@ -1,5 +1,5 @@
 const el = (id) => document.getElementById(id);
-const state = {sensor:false, heading:null, zero:null, yaw:0, websocket:null, authenticated:false, lastSent:0, lastEvent:0, eventCount:0};
+const state = {sensor:false, heading:null, zero:null, yaw:0, websocket:null, authenticated:false, lastSent:0, lastEvent:0, lastSample:0, lastEmpty:null, eventCount:0};
 const wrap = (angle) => ((angle + 180) % 360 + 360) % 360 - 180;
 const bounded = (x, low, high) => Math.max(low, Math.min(high, x));
 
@@ -33,6 +33,7 @@ function orientation(event) {
   if (h === null) return;
   state.heading = h;
   const now = performance.now();
+  state.lastSample = now;
   state.eventCount += 1;
   if (now - state.lastEvent > 1000) {
     el('sensor-rate').textContent = String(Math.round(1000*state.eventCount/Math.max(1, now-state.lastEvent))) + ' Hz';
@@ -72,10 +73,11 @@ function sendControls(force=false) {
   state.lastSent=now;
   ws.send(JSON.stringify({
     type:'control', yaw:bounded(state.yaw,-180,180),
+    sensor_age_ms:el('manual-mode').checked ? 0 : bounded(state.lastSample ? now-state.lastSample : 600000,0,600000),
     raw_on:el('raw-on').checked,
     target:Number(el('target').value),
-    raw_gain:Number(el('dry-gain').value),
-    enh_gain:Number(el('wet-gain').value)
+    raw_gain_db:Number(el('dry-gain').value),
+    enh_gain_db:Number(el('wet-gain').value)
   }));
 }
 function connect() {
@@ -101,6 +103,7 @@ function connect() {
     try{message=JSON.parse(event.data);}catch{return;}
     if(message.type==='ready'){
       state.authenticated=true;
+      state.lastEmpty=null;
       el('bridge-state').textContent='CONECTADO';
       el('disconnect').disabled=false;
       el('connect').disabled=true;
@@ -108,10 +111,23 @@ function connect() {
       sendControls(true);
     }
     if(message.type==='status'){
+      const deadline=Number(message.deadline_ms);
+      const missed=Number(message.deadline_misses);
+      const blocks=Number(message.blocks_rendered);
+      const empty=Number(message.underflows);
+      const age=Number(message.sensor_age_ms);
+      const newEmpty=state.lastEmpty===null?0:Math.max(0,empty-state.lastEmpty);
+      state.lastEmpty=empty;
+      const slow=Number(message.p95_ms)>deadline || newEmpty>0;
+      el('telemetry').classList.toggle('bad',slow || age>1000);
       el('telemetry').textContent=
-        'DSP: '+Number(message.compute_ms).toFixed(2)+' ms / bloco (prazo '+Number(message.deadline_ms).toFixed(2)+' ms)\n'+
-        'Máximo: '+Number(message.max_ms).toFixed(2)+' ms · prazos perdidos: '+Number(message.deadline_misses)+' · underflows: '+Number(message.underflows)+'\n'+
-        'Orientação recebida há '+Number(message.sensor_age_ms).toFixed(0)+' ms. Áudio nos fones do PC.';
+        (slow?'ÁUDIO INSTÁVEL — aumentar o buffer ou reduzir carga no PC.\n':'Áudio sem falhas detectadas até agora.\n')+
+        'DSP p95: '+Number(message.p95_ms).toFixed(2)+' ms / prazo '+deadline.toFixed(2)+' ms; último '+Number(message.compute_ms).toFixed(2)+' ms.\n'+
+        'HRIR '+Number(message.render_ms).toFixed(2)+' ms · TCN '+Number(message.tcn_ms).toFixed(2)+' ms; blocos atrasados '+missed+'/'+blocks+'.\n'+
+        'Fila vazia '+empty+' vezes (+'+newEmpty+' agora); avisos do driver '+Number(message.stream_flags)+'; fila atual '+Number(message.queue_blocks)+' blocos; placa '+Number(message.audio_latency_ms).toFixed(1)+' ms.\n'+
+        'Foco '+String(message.focus)+' · atenção +'+Number(message.attention_db).toFixed(1)+' dB; mistura '+Number(message.dry_dbfs).toFixed(1)+' dBFS · separado '+Number(message.wet_dbfs).toFixed(1)+' dBFS · saída '+Number(message.out_dbfs).toFixed(1)+' dBFS; blocos limitados '+Number(message.clip_blocks)+'.\n'+
+        (age>1000?'SENSOR PARADO ('+(age/1000).toFixed(1)+' s). Reabra a página, ative sensores ou use yaw manual.':'Orientação atualizada há '+age.toFixed(0)+' ms.')+
+        ' Controle há '+Number(message.control_age_ms).toFixed(0)+' ms.';
     }
     if(message.type==='error') el('telemetry').textContent=String(message.message);
   };
@@ -137,11 +153,13 @@ el('manual-yaw').addEventListener('input',()=>{el('manual-value').textContent=el
 el('invert').addEventListener('change',()=>{if(state.heading!==null&&!el('manual-mode').checked)updateYaw((el('invert').checked?-1:1)*wrap(state.heading-state.zero));});
 for(const id of ['raw-on','target','dry-gain','wet-gain']){
   el(id).addEventListener(id.includes('gain')?'input':'change',()=>{
-    el('dry-value').textContent=Number(el('dry-gain').value).toFixed(2);
-    el('wet-value').textContent=Number(el('wet-gain').value).toFixed(2);
+    el('dry-value').textContent=Number(el('dry-gain').value).toFixed(0)+' dB';
+    el('wet-value').textContent=(Number(el('wet-gain').value)>0?'+':'')+Number(el('wet-gain').value).toFixed(0)+' dB';
     sendControls(true);
   });
 }
+// Keep the controller and freshness clock live even when the phone is still.
+setInterval(()=>sendControls(true),250);
 el('connect').addEventListener('click',connect);
 el('disconnect').addEventListener('click',()=>{state.websocket?.close();});
 window.addEventListener('pagehide',()=>state.websocket?.close());
