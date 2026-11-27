@@ -80,7 +80,7 @@ class CausalSpatialTCN(nn.Module):
         return self._images(x, z)
 
     def step(self, x: torch.Tensor, state=None):
-        assert x.shape[1] == 1
+        assert x.ndim == 4 and x.shape[1] >= 1
         z = self.input(self.features(x)).transpose(1, 2)
         if state is None:
             state = [None] * len(self.blocks)
@@ -104,7 +104,7 @@ def load_model(checkpoint: str, device: str = 'cpu') -> CausalSpatialTCN:
 
 
 class NeuralStream:
-    """Returns [samples, sources, ears]; waveform delay HOP plus one scheduler HOP."""
+    """Returns [samples, sources, ears]; accepts one or two consecutive hops."""
     def __init__(self, net: CausalSpatialTCN, device: str = 'cpu'):
         self.net = net
         self.device = device
@@ -116,19 +116,24 @@ class NeuralStream:
 
     @torch.inference_mode()
     def push(self, block: np.ndarray) -> np.ndarray:
-        if block.shape != (HOP, 2):
-            raise ValueError('Bloco precisa ter exatamente 256 amostras x 2 canais')
-        v = torch.as_tensor(block, dtype=torch.float32, device=self.device)
-        frame = torch.cat((self.hist, v), dim=0)
-        self.hist = frame[HOP:].clone()
-        spectrum = torch.fft.rfft(frame * self.win[:, None], dim=0)[None, None, :, :]
+        if block.ndim != 2 or block.shape[1] != 2 or block.shape[0] not in (HOP, 2*HOP):
+            raise ValueError('Bloco precisa ter 256 ou 512 amostras x 2 canais')
+        spectra = []
+        for part in np.split(block, block.shape[0] // HOP, axis=0):
+            v = torch.as_tensor(part, dtype=torch.float32, device=self.device)
+            frame = torch.cat((self.hist, v), dim=0)
+            self.hist = frame[HOP:].clone()
+            spectra.append(torch.fft.rfft(frame * self.win[:, None], dim=0))
+        spectrum = torch.stack(spectra, dim=0)[None, :, :, :]
         ya, yb, self.state = self.net.step(spectrum, self.state)
-        spec = torch.stack((ya[0, 0], yb[0, 0]), dim=1)  # [frequency, source, ear]
-        samples = torch.fft.irfft(spec, n=FFT, dim=0) * self.win[:, None, None]
-        self.ola = self.ola + samples
-        out = self.ola[:HOP].clone()
-        self.ola = torch.cat((self.ola[HOP:], torch.zeros_like(self.ola[:HOP])), dim=0)
-        return out.cpu().numpy()
+        output = []
+        for t in range(len(spectra)):
+            spec = torch.stack((ya[0, t], yb[0, t]), dim=1)  # [frequency, source, ear]
+            samples = torch.fft.irfft(spec, n=FFT, dim=0) * self.win[:, None, None]
+            self.ola = self.ola + samples
+            output.append(self.ola[:HOP].clone())
+            self.ola = torch.cat((self.ola[HOP:], torch.zeros_like(self.ola[:HOP])), dim=0)
+        return torch.cat(output, dim=0).cpu().numpy()
 
 
 def verify_streaming(net: CausalSpatialTCN, device: str):
@@ -148,6 +153,15 @@ def verify_streaming(net: CausalSpatialTCN, device: str):
         if not torch.allclose(full_a, torch.cat(aa, dim=1), atol=1e-4, rtol=1e-4) or \
                 not torch.allclose(full_b, torch.cat(bb, dim=1), atol=1e-4, rtol=1e-4):
             raise RuntimeError('TCN: forward e step não coincidem')
+        state = None
+        aa2, bb2 = [], []
+        for t in range(0, frames.shape[1], 2):
+            a, b, state = net.step(frames[:, t:t + 2], state)
+            aa2.append(a)
+            bb2.append(b)
+        if not torch.allclose(torch.cat(aa, dim=1), torch.cat(aa2, dim=1), atol=1e-4, rtol=1e-4) or \
+                not torch.allclose(torch.cat(bb, dim=1), torch.cat(bb2, dim=1), atol=1e-4, rtol=1e-4):
+            raise RuntimeError('TCN: inferência em dois hops difere da inferência causal em um hop')
         signal = np.zeros((16 * HOP, 2), dtype=np.float32)
         signal[4 * HOP, 0] = 0.1
         signal[5 * HOP + 37, 1] = 0.07
@@ -162,3 +176,9 @@ def verify_streaming(net: CausalSpatialTCN, device: str):
                            np.pad(signal, ((HOP, 0), (0, 0)))[:len(signal)][4 * HOP:]))
         if impulse - 4 * HOP != HOP or error > 2e-5:
             raise RuntimeError(f'TCN/STFT: atraso {impulse - 4 * HOP} samples; erro {error}')
+        stream2 = NeuralStream(net, device)
+        output2 = np.concatenate([stream2.push(signal[i:i + 2*HOP])
+                                  for i in range(0, len(signal), 2*HOP)], axis=0)
+        if not np.allclose(output, output2, atol=3e-5, rtol=3e-5):
+            raise RuntimeError(f'TCN/STFT: dois hops não reproduzem o streaming original '
+                               f'(erro {np.max(np.abs(output - output2)):.3g})')
