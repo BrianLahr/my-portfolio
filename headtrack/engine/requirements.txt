@@ -1,0 +1,8 @@
+numpy
+scipy
+soundfile
+h5py
+sounddevice
+bleak
+PyQt6
+torch

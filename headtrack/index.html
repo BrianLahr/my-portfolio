@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#0a101a">
   <meta name="description" content="Controle de orientação da cabeça por sensores do celular para demonstração de separação binaural de fala.">
   <title>HeadTrack | Binaural Speech Lab</title>
-  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./styles.css?v=2">
 </head>
 <body>
   <main class="shell">
@@ -41,19 +41,19 @@
       </article>
       <article class="panel audio">
         <div class="section-head"><span>03 / ESCUTA</span><strong>SAÍDA NO PC</strong></div>
-        <label class="inline emphasis"><input type="checkbox" id="raw-on" checked> Ouvir também a mistura original</label>
+        <label class="inline emphasis"><input type="checkbox" id="raw-on"> Ouvir também a mistura original</label>
         <label for="target">Voz separada</label>
-        <select id="target"><option value="0">Voz à frente</option><option value="1">Fonte A (+30° no início)</option><option value="2">Fonte B (−30° no início)</option></select>
-        <label class="range-label" for="dry-gain">Ganho da mistura <output id="dry-value">0.42</output></label>
-        <input type="range" id="dry-gain" min="0" max="1" step="0.01" value="0.42">
-        <label class="range-label" for="wet-gain">Ganho separado <output id="wet-value">0.42</output></label>
-        <input type="range" id="wet-gain" min="0" max="1" step="0.01" value="0.42">
-        <p class="help">O botão da mistura atua no caminho direto. A TCN e a seleção continuam ativas com a mistura desligada. Use fones e volume baixo no início.</p>
+        <select id="target"><option value="0">Foco gaussiano (fonte mais à frente)</option><option value="1" selected>Fonte A (+30° no início)</option><option value="2">Fonte B (−30° no início)</option></select>
+        <label class="range-label" for="dry-gain">Ganho da mistura <output id="dry-value">−12 dB</output></label>
+        <input type="range" id="dry-gain" min="-36" max="6" step="1" value="-12">
+        <label class="range-label" for="wet-gain">Ganho separado <output id="wet-value">0 dB</output></label>
+        <input type="range" id="wet-gain" min="-36" max="6" step="1" value="0">
+        <p class="help">Comece com A ou B e a mistura desligada para ouvir a separação. O foco gaussiano escolhe a fonte mais à frente e lhe aplica o realce de 0 a +10 dB do João (σ = 20°); em 0° há empate e A é escolhida. Ganhos acima de 0 dB podem limitar a saída. Use fones e volume baixo no início.</p>
       </article>
     </section>
-    <section class="notes"><h2>Como interpretar</h2><p>A rede foi treinada com KEMAR em +30° e −30°. Girar a cabeça altera a HRIR, mas não torna o checkpoint condicionado à orientação. Um aviso aparece fora da geometria treinada; a identidade das duas saídas pode falhar. A TCN recebe blocos de 256 amostras a 44,1 kHz. A latência relativa programada entre mistura direta e processada é 11,61 ms; o aplicativo do PC mostra atrasos de processamento e underflows. A latência absoluta entre sensores, rede, placa e fones requer medição física.</p></section>
+    <section class="notes"><h2>Como interpretar</h2><p>A rede foi treinada com KEMAR em +30° e −30°. Girar a cabeça altera a HRIR, mas não torna o checkpoint condicionado à orientação. Um aviso aparece fora da geometria treinada; a identidade das duas saídas pode falhar. A TCN recebe blocos de 256 amostras a 44,1 kHz. A latência relativa programada entre mistura direta e processada é 11,61 ms; o buffer de segurança e a placa acrescentam latência absoluta que precisa ser medida em loopback. Se o p95 do DSP ultrapassa 5,80 ms ou a fila fica vazia, a escuta não é contínua.</p></section>
     <footer><a href="/">Voltar ao portfólio</a><span>Pesquisa experimental · EESC-USP / Tiresias</span></footer>
   </main>
-  <script type="module" src="./app.mjs"></script>
+  <script type="module" src="./app.mjs?v=2"></script>
 </body>
 </html>

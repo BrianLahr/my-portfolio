@@ -4,7 +4,7 @@ A página pública [HeadTrack](https://brianlahr.netlify.app/headtrack/) capta *
 
 ## Preparação na máquina pessoal (PowerShell)
 
-Escolha a pasta `Mestrado` que você já utiliza e coloque nela a pasta extraída `imu_binaural_demo` (o ZIP entregue nesta conversa, com `run.py`). Abra PowerShell, substitua a primeira linha pelo **caminho real**:
+Escolha a pasta `Mestrado` que você já utiliza. O motor Python agora está no próprio clone do portfólio em `my-portfolio\headtrack\engine`; versões novas chegam com `git pull`. Abra PowerShell e ajuste a primeira linha ao caminho real:
 
 ```powershell
 $base = "C:\CAMINHO\PARA\Mestrado"
@@ -18,38 +18,37 @@ git lfs pull
 cd ..
 ```
 
-Se já existir algum clone, não execute novamente o respectivo `git clone`. No clone existente de `mestrado-eesc`, você também pode usar uma **worktree** daquela branch; veja as instruções anteriores na conversa. Confira que o arquivo baixado é realmente um checkpoint, e não um ponteiro de texto LFS: `(Get-Item "$base\mestrado-eesc-imu\notebooks\ears_kemar_tcn_causal_best.pt").Length` deve ser maior que 132 bytes.
+Se já existir algum clone, use `git -C "$base\my-portfolio" pull --ff-only origin main` em vez de clonar novamente. Confira que o arquivo baixado é realmente um checkpoint, e não um ponteiro de texto LFS: `(Get-Item "$base\mestrado-eesc-imu\notebooks\ears_kemar_tcn_causal_best.pt").Length` deve ser maior que 132 bytes.
 
-Copie `KEMAR_s.sofa` da máquina de treino para **uma pasta local da máquina pessoal**. A aplicação verifica seu MD5 antes de reproduzir. Por exemplo, coloque em `$base\KEMAR_s.sofa`. O SOFA não está incluído no portfólio nem no clone de `mestrado-eesc`.
+Use o `KEMAR_s.sofa` já disponível em `F:\Brian\Datasets\MMHR-HRIR\KEMAR_s.sofa`. A aplicação verifica seu MD5 antes de reproduzir.
 
-Crie um ambiente Python e instale dependências na pasta extraída:
+Na máquina pessoal do Brian, use o `.venv` com Python 3.10.11 já existente; o código atualizado vem do clone:
 
 ```powershell
 cd "$base\imu_binaural_demo"
-py -3.11 -m venv .venv
 .\.venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
-python -m pip install -r requirements.txt
+python --version
+python -m pip install -r "$base\my-portfolio\headtrack\engine\requirements.txt"
 python -m pip install -r "$base\my-portfolio\headtrack\requirements-bridge.txt"
 ```
 
 Se PowerShell bloquear a ativação, execute `Set-ExecutionPolicy -Scope Process Bypass` na sessão atual. Confira os cinco caminhos antes de executar:
 
 ```powershell
-Test-Path "$base\imu_binaural_demo\run.py"
+Test-Path "$base\my-portfolio\headtrack\engine\run.py"
 Test-Path "$base\yaw-walk-with-me\aar_core.py"
 Test-Path "$base\mestrado-eesc-imu\notebooks\ears_kemar_tcn_causal_best.pt"
-Test-Path "$base\KEMAR_s.sofa"
+Test-Path "F:\Brian\Datasets\MMHR-HRIR\KEMAR_s.sofa"
 Test-Path "$base\my-portfolio\headtrack\bridge.py"
 ```
 
 Os cinco resultados precisam ser `True`. Inicie o áudio local **nesta janela**:
 
 ```powershell
-python "$base\my-portfolio\headtrack\bridge.py" --demo-dir "$base\imu_binaural_demo" --joao-repo "$base\yaw-walk-with-me" --checkpoint "$base\mestrado-eesc-imu\notebooks\ears_kemar_tcn_causal_best.pt" --sofa "$base\KEMAR_s.sofa"
+python "$base\my-portfolio\headtrack\bridge.py" --joao-repo "$base\yaw-walk-with-me" --checkpoint "$base\mestrado-eesc-imu\notebooks\ears_kemar_tcn_causal_best.pt" --sofa "F:\Brian\Datasets\MMHR-HRIR\KEMAR_s.sofa"
 ```
 
-Se `laura.mp3` ou `cooper.mp3` falharem ao abrir, converta-os para WAV conforme o README de `imu_binaural_demo`, passando `--source-a` e `--source-b`. Conecte fones estéreo ao PC; se o dispositivo padrão estiver errado, use `python -m sounddevice` e depois `--output-device "NOME"`. Comece com CPU; mudar para `--device cuda:0` só faz sentido após medir os prazos nesse PC.
+Se `laura.mp3` ou `cooper.mp3` falharem ao abrir, converta-os para WAV PCM 44,1 kHz mono e passe `--source-a` e `--source-b`. Conecte fones estéreo ao PC; se o dispositivo padrão estiver errado, use `python -m sounddevice` e depois `--output-device "NOME"`. Comece com CPU; mudar para `--device cuda:0` só faz sentido após medir os prazos nesse PC. Ao iniciar, o programa faz um diagnóstico curto com as vozes do João: ΔSI-SDR por ouvido, consistência da mistura e p95 do DSP. Para testar robustez, use `--buffer-blocks 16` (padrão, até ~93 ms na fila) ou 32. `--audio-latency high` (padrão) solicita um buffer estável ao driver. A fila e a placa aumentam a latência absoluta; não tornam uma carga média acima de 5,80 ms/bloco viável em tempo real. Não passe `--demo-dir` apontando para o ZIP antigo, pois isso carregaria o código desatualizado.
 
 ## Conexão segura entre celular e PC
 
@@ -70,3 +69,7 @@ Mantenha o celular em posição **vertical**, tela voltada para você, com a câ
 O cálculo de orientação projeta o vetor frontal do aparelho no plano horizontal depois da composição `R_z(alpha)R_x(beta)R_y(gamma)` definida pelo padrão W3C. Quando o eixo frontal aponta quase na vertical, o yaw não é definido e a página pede para erguer o telefone. Um navegador pode fornecer referência relativa com deriva; recalibre com frequência. Permissão de sensores exige HTTPS e interação do usuário. Notificações de yaw passam por internet e túnel: a idade da última mensagem aparece no site, **não** é uma medição de latência ponta a ponta.
 
 As fontes são as vozes gravadas do João. O som misturado e o processado são reproduzidos pelo mesmo PC; a diferença relativa de **11,61 ms programada** é a simulação da escuta acústica direta versus a via processada. O atraso real da placa e da rede não é fixo. A rede treinada para A em +30° e B em −30° pode perder identidade sob giros; a página sinaliza essa condição, sem extrapolar desempenho do treino. Essa demonstração não usa microfones reais nem executa a TCN no celular.
+
+Os controles da mistura e da fonte separada são em dB; a amplitude é multiplicada por `10^(dB/20)`. O checkbox começa desligado e a fonte A é selecionada, permitindo conferir A/B isoladas primeiro. O foco gaussiano segue o `aar_core.compute_attention` do João: `boost_db = 10 exp(-θ²/(2·20²))`, θ em graus, aplicado somente à imagem separada escolhida. A escolha automática pega a fonte mais próxima do eixo frontal; no empate a 0° escolhe A. João aplica o ganho às vozes originais antes da mistura; aqui a TCN recebe a mistura sem ganho diferencial para preservar a condição de treino. O fator de distância do João vale 1 nesta cena sintética a 1 m.
+
+Na telemetria, “blocos atrasados” são chamadas DSP acima do prazo de 5,80 ms; “fila vazia” conta callbacks sem áudio, enquanto “avisos do driver” conta flags do PortAudio separadamente. A versão anterior somava estes eventos no mesmo contador e podia contá-los duas vezes. O p95 considera até 512 blocos recentes. dBFS de mistura/separado/saída e contagem de blocos limitados ajudam a distinguir pouco sinal de clipping. “Sensor parado” corresponde à idade da última amostra efetiva de orientação; o pulso de controle não disfarça a interrupção do sensor. Com fila vazia recorrente, a escuta não é contínua e não serve para avaliar qualidade nem latência.
