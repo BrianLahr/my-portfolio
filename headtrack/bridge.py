@@ -37,6 +37,8 @@ async def main() -> None:
     parser.add_argument('--output-device')
     parser.add_argument('--buffer-blocks', type=int, default=16,
                         help='Fila em blocos de 256 amostras (3..128; padrão 16)')
+    parser.add_argument('--block-hops', type=int, choices=(1, 2), default=1,
+                        help='2 agrupa duas janelas na TCN (prazo 11,61 ms; +5,80 ms de atraso relativo)')
     parser.add_argument('--audio-latency', choices=('low', 'high'), default='high')
     parser.add_argument('--self-test-seconds', type=float, default=2.,
                         help='Diagnóstico offline das vozes antes de iniciar o áudio')
@@ -110,7 +112,9 @@ async def main() -> None:
                         'max_ms':data['max_ms'],
                         'render_ms':data['render_ms'],
                         'tcn_ms':data['tcn_ms'],
-                        'deadline_ms':1000*HOP/FS,
+                        'deadline_ms':1000*engine.block_hops*HOP/FS,
+                        'relative_delay_ms':1000*(engine.block_hops+1)*HOP/FS,
+                        'block_hops':engine.block_hops,
                         'blocks_rendered':data['blocks_rendered'],
                         'deadline_misses':data['deadline_misses'],
                         'underflows':data['underflows'],
