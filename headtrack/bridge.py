@@ -55,6 +55,8 @@ async def main() -> None:
         orientation.manual = True
         orientation.manual_yaw = 0.
     engine = Engine(args, orientation, core)
+    engine.raw_on = False
+    engine.enh_gain = 0.
     output = (int(args.output_device) if args.output_device and
               args.output_device.isdecimal() else args.output_device)
     engine.start(output)
