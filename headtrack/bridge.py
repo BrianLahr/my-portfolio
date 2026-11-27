@@ -40,6 +40,8 @@ async def main() -> None:
     parser.add_argument('--audio-latency', choices=('low', 'high'), default='high')
     parser.add_argument('--self-test-seconds', type=float, default=2.,
                         help='Diagnóstico offline das vozes antes de iniciar o áudio')
+    parser.add_argument('--no-auto-threads', action='store_false', dest='auto_threads',
+                        help='Não compara 1/2/4 threads antes do áudio')
     parser.add_argument('--port', type=int, default=8765)
     parser.add_argument('--origin', default='https://brianlahr.netlify.app',
                         help='Origem HTTPS exata da página que acessará o WebSocket')
