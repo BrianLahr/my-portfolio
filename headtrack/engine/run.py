@@ -159,6 +159,9 @@ def first_active_window(track: np.ndarray, *, window_seconds: float = 2.) -> int
 class Engine:
     def __init__(self, args, orientation: Orientation, core):
         self.core, self.orientation = core, orientation
+        self.block_hops = int(getattr(args, 'block_hops', 1))
+        if self.block_hops not in (1, 2):
+            raise ValueError('block_hops deve ser 1 ou 2')
         self.renderer = KEMARRenderer(str(args.sofa))
         net = load_model(str(args.checkpoint), args.device)
         verify_streaming(net, args.device)
@@ -191,7 +194,7 @@ class Engine:
         self.compute_times = deque(maxlen=512)
         self.prev_weight = 1.
         self.prev_attention = db_to_linear(attention_db(30.))
-        self.extra_delay = np.zeros((HOP, 2), dtype=np.float32)
+        self.extra_delay = np.zeros((self.block_hops * HOP, 2), dtype=np.float32)
         self.stream_handle = None
         self.worker = threading.Thread(target=self._worker, name='dsp-worker', daemon=True)
         if args.device == 'cpu' and getattr(args, 'auto_threads', True):
@@ -213,18 +216,23 @@ class Engine:
             return 0.
         if not math.isfinite(seconds) or seconds > 30:
             raise ValueError('self_test_seconds deve estar entre 0 e 30')
-        count = max(12, math.ceil(seconds * FS / HOP))
+        count = max(12, math.ceil(seconds * FS / (self.block_hops * HOP)))
         positions = self.start_positions.copy()
         stream = NeuralStream(self.stream.net, self.stream.device)
         truth, mixed, predicted, elapsed = [], [], [], []
         try:
             for _ in range(count):
-                chunks = []
-                for j, track in enumerate(self.audio):
-                    chunks.append(track[(np.arange(HOP) + positions[j]) % len(track)])
-                    positions[j] = (positions[j] + HOP) % len(track)
                 start = time.perf_counter()
-                a, b = self.renderer.push(tuple(chunks), self.world_az)
+                rendered_a, rendered_b = [], []
+                for _hop in range(self.block_hops):
+                    chunks = []
+                    for j, track in enumerate(self.audio):
+                        chunks.append(track[(np.arange(HOP) + positions[j]) % len(track)])
+                        positions[j] = (positions[j] + HOP) % len(track)
+                    a, b = self.renderer.push(tuple(chunks), self.world_az)
+                    rendered_a.append(a)
+                    rendered_b.append(b)
+                a, b = np.concatenate(rendered_a), np.concatenate(rendered_b)
                 mix = a + b
                 estimate = stream.push(mix)
                 elapsed.append((time.perf_counter() - start) * 1000.)
@@ -272,8 +280,8 @@ class Engine:
                 print(f'  AVISO: Fonte {"AB"[source]} abaixo de −60 dBFS neste trecho: '
                       'o ΔSI-SDR não garante audibilidade.', flush=True)
         print(f'  Consistência {error:.2g}; DSP no teste p95 {p95:.2f} ms '
-              f'(prazo {1000*HOP/FS:.2f} ms).', flush=True)
-        if p95 >= 1000*HOP/FS:
+              f'(prazo {1000*self.block_hops*HOP/FS:.2f} ms).', flush=True)
+        if p95 >= 1000*self.block_hops*HOP/FS:
             print('  AVISO: p95 acima do prazo; a escuta contínua neste PC ainda não está demonstrada.', flush=True)
         return p95
 
@@ -293,10 +301,15 @@ class Engine:
                 q, imu = self.orientation.snapshot()
                 az = tuple(float(self.core.source_relative_angle(q, p.copy()))
                            for p in self.sources)
-                a, b = self.renderer.push((self._chunk(0), self._chunk(1)), az)
+                rendered_a, rendered_b = [], []
+                for _hop in range(self.block_hops):
+                    a, b = self.renderer.push((self._chunk(0), self._chunk(1)), az)
+                    rendered_a.append(a)
+                    rendered_b.append(b)
+                a, b = np.concatenate(rendered_a), np.concatenate(rendered_b)
                 mix = a + b
                 rendered = time.perf_counter()
-                enhanced = self.stream.push(mix)  # [256, 2 sources, 2 ears]
+                enhanced = self.stream.push(mix)  # [block_hops*256, 2 sources, 2 ears]
                 inferred = time.perf_counter()
                 if self.target == 1:
                     w, focus = 1., 0
@@ -308,35 +321,36 @@ class Engine:
                     focus = 0 if abs(az[0]) <= abs(az[1]) else 1
                     w = 1. if focus == 0 else 0.
                 w = .75 * self.prev_weight + .25 * w
-                ramp = np.linspace(self.prev_weight, w, HOP, dtype=np.float32)[:, None]
+                ramp = np.linspace(self.prev_weight, w, self.block_hops*HOP, dtype=np.float32)[:, None]
                 self.prev_weight = w
                 # Gaussian 0..+10 dB boost from João, applied only to the
                 # selected neural image. The two virtual sources are at 1 m.
                 boost_db = attention_db(az[focus])
                 boost = .75 * self.prev_attention + .25 * db_to_linear(boost_db)
-                boost_ramp = np.linspace(self.prev_attention, boost, HOP, dtype=np.float32)[:, None]
+                boost_ramp = np.linspace(self.prev_attention, boost, self.block_hops*HOP, dtype=np.float32)[:, None]
                 self.prev_attention = boost
                 selected = boost_ramp * (ramp * enhanced[:, 0, :] +
                                          (1. - ramp) * enhanced[:, 1, :])
                 # The notebook has a 256-sample waveform offset; a real captured
-                # block cannot be played before it finishes. Add one block to emulate
-                # that capture/scheduling delay relative to direct acoustic hearing.
+                # block cannot be played before it finishes. Add one processing batch
+                # to emulate capture/scheduling delay relative to direct acoustic hearing.
                 delayed = self.extra_delay
                 self.extra_delay = selected.astype(np.float32)
                 took = (time.perf_counter() - t) * 1000.
                 with self.lock:
                     self.stats['compute_ms'] = took
                     self.stats['max_ms'] = max(self.stats['max_ms'], took)
-                    self.stats['deadline_misses'] += took > (1000 * HOP / FS)
+                    self.stats['deadline_misses'] += took > (1000 * self.block_hops * HOP / FS)
                     self.stats['render_ms'] = (rendered - t) * 1000.
                     self.stats['tcn_ms'] = (inferred - rendered) * 1000.
-                    self.stats['blocks_rendered'] += 1
+                    self.stats['blocks_rendered'] += 1  # processing batches, not callbacks
                     self.stats['attention_db'] = boost_db
                     self.stats['focus'] = 'AB'[focus]
                     self.stats['source_az'] = az
                     self.stats['imu'] = imu
                     self.compute_times.append(took)
-                self.queue.put((mix, delayed), timeout=.2)
+                for offset in range(0, len(mix), HOP):
+                    self.queue.put((mix[offset:offset+HOP], delayed[offset:offset+HOP]), timeout=.2)
         except Exception as exc:
             self.errors.put(f'{type(exc).__name__}: {exc}')
             self.running.clear()
@@ -462,11 +476,12 @@ class Window(QMainWindow):
             f"IMU: {stats['imu']} | azimutes A/B: {az_a:+.1f}° / {az_b:+.1f}°\n"
             f"{warning}\n"
             f"DSP último/máximo: {stats['compute_ms']:.2f}/{stats['max_ms']:.2f} ms "
-            f"(prazo {1000 * HOP / FS:.2f} ms); ultrapassagens: {stats['deadline_misses']}; "
+            f"(prazo {1000 * self.engine.block_hops * HOP / FS:.2f} ms); ultrapassagens: {stats['deadline_misses']}; "
             f"blocos sem áudio: {stats['underflows']}; flags do driver: {stats['stream_flags']}\n"
             f"Foco {stats['focus']} (+{stats['attention_db']:.1f} dB gaussiano); "
             f"saída {stats['out_dbfs']:.1f} dBFS; blocos com corte: {stats['clip_blocks']}\n"
-            f"Separado vs. direto: 512 amostras = {1000 * FFT / FS:.2f} ms "
+            f"Separado vs. direto: {(self.engine.block_hops+1)*HOP} amostras = "
+            f"{1000 * (self.engine.block_hops+1)*HOP / FS:.2f} ms "
             f"programados; buffers de áudio/IMU acrescentam atraso físico. Use fones.")
 
 
@@ -484,6 +499,8 @@ def main():
                         help='Nome/índice da saída; veja python -m sounddevice')
     parser.add_argument('--buffer-blocks', type=int, default=16,
                         help='Fila de blocos de 256 amostras; 16 = até 93 ms de fila')
+    parser.add_argument('--block-hops', type=int, choices=(1, 2), default=1,
+                        help='1 ou 2 hops de 256 amostras por chamada TCN; 2 acrescenta 5,80 ms ao atraso relativo')
     parser.add_argument('--audio-latency', choices=('low','high'), default='high')
     parser.add_argument('--self-test-seconds', type=float, default=2.,
                         help='Diagnóstico offline curto antes de iniciar a escuta; 0 desativa')

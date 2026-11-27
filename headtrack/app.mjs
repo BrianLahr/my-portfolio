@@ -123,8 +123,9 @@ function connect() {
       el('telemetry').textContent=
         (slow?'ÁUDIO INSTÁVEL — aumentar o buffer ou reduzir carga no PC.\n':'Áudio sem falhas detectadas até agora.\n')+
         'DSP p95: '+Number(message.p95_ms).toFixed(2)+' ms / prazo '+deadline.toFixed(2)+' ms; último '+Number(message.compute_ms).toFixed(2)+' ms.\n'+
-        'HRIR '+Number(message.render_ms).toFixed(2)+' ms · TCN '+Number(message.tcn_ms).toFixed(2)+' ms; blocos atrasados '+missed+'/'+blocks+'.\n'+
+        'HRIR '+Number(message.render_ms).toFixed(2)+' ms · TCN '+Number(message.tcn_ms).toFixed(2)+' ms; lotes atrasados '+missed+'/'+blocks+' ('+Number(message.block_hops||1)+' janela(s)/lote).\n'+
         'Fila vazia '+empty+' vezes (+'+newEmpty+' agora); avisos do driver '+Number(message.stream_flags)+'; fila atual '+Number(message.queue_blocks)+' blocos; placa '+Number(message.audio_latency_ms).toFixed(1)+' ms.\n'+
+        'Atraso relativo programado: '+Number(message.relative_delay_ms||11.61).toFixed(2)+' ms; a latência física total precisa de medição externa.\n'+
         'Foco '+String(message.focus)+' · atenção +'+Number(message.attention_db).toFixed(1)+' dB; mistura '+Number(message.dry_dbfs).toFixed(1)+' dBFS · separado '+Number(message.wet_dbfs).toFixed(1)+' dBFS · saída '+Number(message.out_dbfs).toFixed(1)+' dBFS; blocos limitados '+Number(message.clip_blocks)+'.\n'+
         (age>1000?'SENSOR PARADO ('+(age/1000).toFixed(1)+' s). Reabra a página, ative sensores ou use yaw manual.':'Orientação atualizada há '+age.toFixed(0)+' ms.')+
         ' Controle há '+Number(message.control_age_ms).toFixed(0)+' ms.';
