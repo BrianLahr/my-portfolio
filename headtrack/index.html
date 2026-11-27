@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0a101a">
+  <meta name="description" content="Controle de orientação da cabeça por sensores do celular para demonstração de separação binaural de fala.">
+  <title>HeadTrack | Binaural Speech Lab</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="top">
+      <a href="/" class="brand">BRIAN LAHR <span>/ HEADTRACK</span></a>
+      <div class="pill" id="sensor-state">SENSOR AGUARDANDO</div>
+    </header>
+    <section class="hero">
+      <p class="eyebrow">BINAURAL SPEECH · HEAD ORIENTATION</p>
+      <h1>Escute a cena <em>mudar de direção.</em></h1>
+      <p>O celular fornece orientação. Seu computador executa a TCN com o checkpoint treinado e reproduz o som em fones estéreo. O modelo permanece no computador.</p>
+    </section>
+    <section class="grid">
+      <article class="panel orientation">
+        <div class="section-head"><span>01 / ORIENTAÇÃO</span><strong id="sensor-rate">— Hz</strong></div>
+        <div class="dial"><div class="dial-grid"></div><div class="dial-needle" id="needle"></div><span class="left">B · −30°</span><span class="right">A · +30°</span><div class="readout"><strong id="yaw-value">0.0°</strong><small>YAW RELATIVO À CALIBRAÇÃO</small></div></div>
+        <div class="button-row"><button id="sensor-button" class="primary">Ativar sensores</button><button id="zero-button">Calibrar frente</button></div>
+        <p class="help" id="sensor-help">Abra esta página no navegador do celular por HTTPS. Mantenha o telefone vertical, com a tela voltada para você; para que acompanhe a cabeça, ele deve girar junto com ela. Sem montagem rígida, use o controle manual para testar.</p>
+        <label class="inline"><input type="checkbox" id="manual-mode"> Testar yaw manualmente</label>
+        <label class="inline"><input type="checkbox" id="invert"> Inverter sentido de rotação</label>
+        <label class="range-label" for="manual-yaw">Ângulo manual <output id="manual-value">0°</output></label>
+        <input type="range" id="manual-yaw" min="-120" max="120" step="1" value="0" disabled>
+        <p class="warn" id="geometry-warning">Geometria próxima da condição de treino.</p>
+      </article>
+      <article class="panel connection">
+        <div class="section-head"><span>02 / CONECTAR O COMPUTADOR</span><strong id="bridge-state">DESCONECTADO</strong></div>
+        <p>Execute o programa de áudio no PC, abra um túnel HTTPS/WSS temporário e cole o endereço e o código mostrados no terminal. A página envia apenas yaw e controles; o áudio continua nos fones do computador.</p>
+        <label>Endereço do túnel HTTPS<input id="endpoint" type="url" inputmode="url" autocomplete="off" placeholder="https://…trycloudflare.com"></label>
+        <label>Código da sessão<input id="session-token" type="password" autocomplete="off" placeholder="Código exibido pelo programa no PC"></label>
+        <div class="button-row"><button id="connect" class="primary">Conectar</button><button id="disconnect" disabled>Desconectar</button></div>
+        <div class="telemetry" id="telemetry">A conexão é opcional para testar os sensores.</div>
+      </article>
+      <article class="panel audio">
+        <div class="section-head"><span>03 / ESCUTA</span><strong>SAÍDA NO PC</strong></div>
+        <label class="inline emphasis"><input type="checkbox" id="raw-on" checked> Ouvir também a mistura original</label>
+        <label for="target">Voz separada</label>
+        <select id="target"><option value="0">Voz à frente</option><option value="1">Fonte A (+30° no início)</option><option value="2">Fonte B (−30° no início)</option></select>
+        <label class="range-label" for="dry-gain">Ganho da mistura <output id="dry-value">0.42</output></label>
+        <input type="range" id="dry-gain" min="0" max="1" step="0.01" value="0.42">
+        <label class="range-label" for="wet-gain">Ganho separado <output id="wet-value">0.42</output></label>
+        <input type="range" id="wet-gain" min="0" max="1" step="0.01" value="0.42">
+        <p class="help">O botão da mistura atua no caminho direto. A TCN e a seleção continuam ativas com a mistura desligada. Use fones e volume baixo no início.</p>
+      </article>
+    </section>
+    <section class="notes"><h2>Como interpretar</h2><p>A rede foi treinada com KEMAR em +30° e −30°. Girar a cabeça altera a HRIR, mas não torna o checkpoint condicionado à orientação. Um aviso aparece fora da geometria treinada; a identidade das duas saídas pode falhar. A TCN recebe blocos de 256 amostras a 44,1 kHz. A latência relativa programada entre mistura direta e processada é 11,61 ms; o aplicativo do PC mostra atrasos de processamento e underflows. A latência absoluta entre sensores, rede, placa e fones requer medição física.</p></section>
+    <footer><a href="/">Voltar ao portfólio</a><span>Pesquisa experimental · EESC-USP / Tiresias</span></footer>
+  </main>
+  <script type="module" src="./app.mjs"></script>
+</body>
+</html>
