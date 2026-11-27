@@ -5,6 +5,7 @@ import argparse
 import asyncio
 from collections import deque
 import math
+import os
 import queue
 import struct
 import sys
@@ -15,6 +16,7 @@ from pathlib import Path
 import numpy as np
 import sounddevice as sd
 import soundfile as sf
+import torch
 from scipy.signal import resample_poly
 from PyQt6.QtCore import Qt, QTimer
 from PyQt6.QtWidgets import (QApplication, QCheckBox, QComboBox, QDoubleSpinBox,
@@ -141,6 +143,19 @@ def load_track(path: Path):
     return (x * (.03 / rms)).astype(np.float32)
 
 
+def first_active_window(track: np.ndarray, *, window_seconds: float = 2.) -> int:
+    """Find an early sustained speech window without changing track amplitude."""
+    width = round(window_seconds * FS)
+    if len(track) <= width:
+        return 0
+    step = FS // 2
+    starts = np.arange(0, min(len(track) - width, 30 * FS) + 1, step)
+    energy = np.concatenate(([0.], np.cumsum(np.square(track[:starts[-1] + width], dtype=np.float64))))
+    levels = np.sqrt((energy[starts + width] - energy[starts]) / width)
+    eligible = np.flatnonzero(levels >= max(.008, .9 * float(levels.max())))
+    return int(starts[eligible[0]]) if len(eligible) else 0
+
+
 class Engine:
     def __init__(self, args, orientation: Orientation, core):
         self.core, self.orientation = core, orientation
@@ -149,7 +164,8 @@ class Engine:
         verify_streaming(net, args.device)
         self.stream = NeuralStream(net, args.device)
         self.audio = (load_track(args.source_a), load_track(args.source_b))
-        self.positions = [0, 0]
+        self.start_positions = [first_active_window(track) for track in self.audio]
+        self.positions = self.start_positions.copy()
         self.world_az = (30., -30.)
         self.sources = tuple(np.array([math.cos(math.radians(a)),
                                        math.sin(math.radians(a)), 0.], dtype=np.float32)
@@ -178,16 +194,27 @@ class Engine:
         self.extra_delay = np.zeros((HOP, 2), dtype=np.float32)
         self.stream_handle = None
         self.worker = threading.Thread(target=self._worker, name='dsp-worker', daemon=True)
+        if args.device == 'cpu' and getattr(args, 'auto_threads', True):
+            candidates = [n for n in (1, 2, 4) if n <= (os.cpu_count() or 1)]
+            trials = {}
+            for n in candidates:
+                torch.set_num_threads(n)
+                trials[n] = self.check_scene(.5, report=False)
+            best = min(trials, key=trials.get)
+            torch.set_num_threads(best)
+            print('CPU, p95 da cena por número de threads: ' +
+                  ', '.join(f'{n}: {ms:.2f} ms' for n, ms in trials.items()) +
+                  f'; usando {best} thread(s).', flush=True)
         self.check_scene(float(getattr(args, 'self_test_seconds', 2.)))
 
-    def check_scene(self, seconds: float) -> None:
+    def check_scene(self, seconds: float, *, report: bool = True) -> float:
         """Offline sanity check with the actual voices and fixed training geometry."""
         if seconds <= 0:
-            return
+            return 0.
         if not math.isfinite(seconds) or seconds > 30:
             raise ValueError('self_test_seconds deve estar entre 0 e 30')
         count = max(12, math.ceil(seconds * FS / HOP))
-        positions = [0, 0]
+        positions = self.start_positions.copy()
         stream = NeuralStream(self.stream.net, self.stream.device)
         truth, mixed, predicted, elapsed = [], [], [], []
         try:
@@ -216,6 +243,9 @@ class Engine:
         error = float(np.max(np.abs(estimate.sum(axis=1) - baseline)))
         if error > 2e-5:
             raise RuntimeError(f'Teste de cena: mistura reconstruída diverge: {error:.3g}')
+        p95 = float(np.percentile(elapsed[10:], 95))
+        if not report:
+            return p95
 
         def si_sdr(estimate_1d, truth_1d):
             e = estimate_1d.astype(np.float64) - float(np.mean(estimate_1d))
@@ -227,16 +257,25 @@ class Engine:
             return 10. * math.log10((np.dot(p, p) + 1e-20) /
                                     (np.dot(e - p, e - p) + 1e-20))
 
-        print('\nDiagnóstico das vozes do João em +30°/−30° (trecho curto, sem métrica de paper):', flush=True)
+        print('\nDiagnóstico das vozes do João em +30°/−30° (trecho ativo, sem métrica de paper):', flush=True)
         for source in (0, 1):
             scores = []
             for ear in (0, 1):
                 scores.append(si_sdr(estimate[:, source, ear], reference[:, source, ear]) -
                               si_sdr(baseline[:, ear], reference[:, source, ear]))
-            print(f'  Fonte {"AB"[source]}: ΔSI-SDR L/R {scores[0]:+.1f}/{scores[1]:+.1f} dB; '
-                  f'alvo {level_dbfs(reference[:, source, :]):.1f} dBFS', flush=True)
-        print(f'  Consistência {error:.2g}; DSP no teste p95 {np.percentile(elapsed[10:],95):.2f} ms '
+            raw = self.audio[source][(np.arange(len(x)) + self.start_positions[source]) % len(self.audio[source])]
+            target_level = level_dbfs(reference[:, source, :])
+            print(f'  Fonte {"AB"[source]}: início {self.start_positions[source]/FS:.1f} s; '
+                  f'RMS seco {level_dbfs(raw):.1f} dBFS; alvo KEMAR {target_level:.1f} dBFS; '
+                  f'ΔSI-SDR L/R {scores[0]:+.1f}/{scores[1]:+.1f} dB', flush=True)
+            if target_level < -60:
+                print(f'  AVISO: Fonte {"AB"[source]} abaixo de −60 dBFS neste trecho: '
+                      'o ΔSI-SDR não garante audibilidade.', flush=True)
+        print(f'  Consistência {error:.2g}; DSP no teste p95 {p95:.2f} ms '
               f'(prazo {1000*HOP/FS:.2f} ms).', flush=True)
+        if p95 >= 1000*HOP/FS:
+            print('  AVISO: p95 acima do prazo; a escuta contínua neste PC ainda não está demonstrada.', flush=True)
+        return p95
 
     def _chunk(self, i):
         x = self.audio[i]
@@ -448,6 +487,8 @@ def main():
     parser.add_argument('--audio-latency', choices=('low','high'), default='high')
     parser.add_argument('--self-test-seconds', type=float, default=2.,
                         help='Diagnóstico offline curto antes de iniciar a escuta; 0 desativa')
+    parser.add_argument('--no-auto-threads', action='store_false', dest='auto_threads',
+                        help='Não compara 1/2/4 threads no início')
     parser.add_argument('--ble-name', default=DEVICE_NAME)
     parser.add_argument('--ble-uuid', default=CHAR_UUID)
     args = parser.parse_args()
